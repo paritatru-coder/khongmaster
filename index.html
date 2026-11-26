@@ -1,0 +1,2773 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>KhongMaster - ห้องซ้อมฆ้องวงใหญ่เสมือนจริง</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700&family=Mitr:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FDFBF7;
+      --wood-dark: #4A2E1B;
+      --wood-mid: #8B5A2B;
+      --wood-light: #D9A76A;
+      --gold-main: #F59E0B;
+      --gold-bright: #FDE047;
+      --left-blue: #2563EB;
+      --right-orange: #EA580C;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    input, textarea, select {
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    @keyframes authShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-7px); }
+      40%, 80% { transform: translateX(7px); }
+    }
+
+    .auth-shake {
+      animation: authShake 0.35s ease;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+      background-color: var(--bg-cream);
+      color: #2D1E12;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-mitr {
+      font-family: 'Mitr', sans-serif;
+    }
+
+    /* Top Bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #FFF9EB;
+      border-bottom: 2px solid #F3E3C3;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FFE875, #D97706 75%, #78350F 100%);
+      border: 2px solid #78350F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Mitr', sans-serif;
+      font-weight: 700;
+      color: #451A03;
+      box-shadow: 0 3px 0 #78350F;
+    }
+
+    .brand-title {
+      font-family: 'Mitr', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #4A2E1B;
+    }
+
+    .btn-teacher {
+      background: #4A2E1B;
+      color: #FFF;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+
+    /* Container */
+    .main-container {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 14px 12px 32px;
+    }
+
+    .card {
+      background: #FFFFFF;
+      border: 2px solid #EFE0C4;
+      border-radius: 24px;
+      padding: 20px 16px;
+      box-shadow: 0 8px 24px rgba(139, 90, 43, 0.08);
+    }
+
+    .badge-welcome {
+      display: inline-block;
+      background: #FEF3C7;
+      border: 1.5px solid #F59E0B;
+      color: #92400E;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    /* Chibi Showcase Row on Login */
+    .chibi-showcase {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      background: #FFFDF7;
+      border: 1.5px solid #F3E5AB;
+      border-radius: 18px;
+      padding: 12px 6px 10px;
+      margin: 12px 0 18px;
+      text-align: center;
+    }
+
+    .chibi-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 2px;
+    }
+
+    .chibi-svg-wrap {
+      width: 56px;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chibi-name {
+      font-weight: 700;
+      font-size: 0.78rem;
+      margin-top: 4px;
+      color: #3E2723;
+    }
+
+    .chibi-desc {
+      font-size: 0.65rem;
+      color: #795548;
+      line-height: 1.1;
+    }
+
+    /* Inputs & Buttons */
+    .form-label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #3E2723;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .student-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 1.05rem;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      color: #2D1E12;
+      background-color: #FFFDF9;
+      border: 2.5px solid #E5C17B;
+      border-radius: 16px;
+      margin-bottom: 16px;
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .student-input:focus {
+      border-color: #D97706;
+      background-color: #FFFFFF;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 15px 20px;
+      font-family: 'Mitr', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0 5px 0 #92400E, 0 8px 16px rgba(217, 119, 6, 0.3);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .btn-primary:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #92400E;
+    }
+
+    /* ==================== SCREEN 2: 10 STAGES MAP ==================== */
+    .student-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+      border: 2px solid #F59E0B;
+      border-radius: 20px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+    }
+
+    .stages-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .stage-card {
+      background: #FFFFFF;
+      border: 2px solid #EED9B3;
+      border-radius: 18px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      box-shadow: 0 4px 12px rgba(139, 90, 43, 0.05);
+    }
+
+    .stage-card:hover {
+      border-color: #D97706;
+      transform: translateY(-2px);
+    }
+
+    .stage-card.passed {
+      border-color: #10B981;
+      background: #F0FDF4;
+    }
+
+    .stage-num {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: #FEF3C7;
+      border: 2px solid #D97706;
+      color: #92400E;
+      font-family: 'Mitr', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stage-card.passed .stage-num {
+      background: #10B981;
+      border-color: #059669;
+      color: #FFFFFF;
+    }
+
+    .stage-info {
+      flex: 1;
+      text-align: left;
+    }
+
+    .stage-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: #2D1E12;
+      margin-bottom: 2px;
+    }
+
+    .stage-sub {
+      font-size: 0.74rem;
+      color: #6D4C41;
+      margin-bottom: 2px;
+    }
+
+    .stage-meta {
+      font-size: 0.76rem;
+      color: #78350F;
+    }
+
+    .stage-play-btn {
+      background: #F59E0B;
+      color: #FFF;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 3px 0 #B45309;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ==================== SCREEN 3: KHONG PRACTICE SCREEN ==================== */
+    .practice-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .practice-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      background: #FFF9EB;
+      border: 1.5px solid #EED9B3;
+      border-radius: 16px;
+      padding: 8px 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Part Switcher Bar (for multi-part stages 3-8 to prevent thumb fatigue) */
+    .part-switcher {
+      display: flex;
+      gap: 6px;
+      background: #FFFDF7;
+      border: 1.5px solid #EED9B3;
+      border-radius: 14px;
+      padding: 5px;
+    }
+
+    .part-pill {
+      flex: 1;
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      background: transparent;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #6D4C41;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .part-pill.active {
+      background: #FEF3C7;
+      border-color: #D97706;
+      color: #92400E;
+      box-shadow: 0 2px 5px rgba(217, 119, 6, 0.14);
+    }
+
+    .current-stage-badge {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #4A2E1B;
+      background: #FEF3C7;
+      border: 1.5px solid #F59E0B;
+      padding: 5px 10px;
+      border-radius: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 170px;
+    }
+
+    .mini-btn {
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1.5px solid #D9A76A;
+      background: #FFFFFF;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #4A2E1B;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .mini-btn.active-mode {
+      background: #2563EB;
+      border-color: #1D4ED8;
+      color: #FFFFFF;
+    }
+
+    .mini-btn.metronome-on {
+      background: #059669;
+      border-color: #047857;
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+
+    /* Non-Overlapping Chibi Companion Strip */
+    .companion-strip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFFFFF;
+      border: 2px solid #E5C17B;
+      border-radius: 18px;
+      padding: 6px 12px;
+      min-height: 74px;
+      box-shadow: 0 4px 12px rgba(139, 90, 43, 0.06);
+    }
+
+    .btn-landscape-back {
+      display: none;
+    }
+
+    .companion-avatar {
+      width: 60px;
+      height: 66px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: chibiBounce 2.4s ease-in-out infinite;
+    }
+
+    @keyframes chibiBounce {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .speech-box {
+      flex: 1;
+      text-align: left;
+    }
+
+    .speech-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+      gap: 6px;
+    }
+
+    .mascot-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: #4A2E1B;
+      color: #FEF3C7;
+    }
+
+    .ching-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: #FEF3C7;
+      border: 1px solid #F59E0B;
+      color: #92400E;
+    }
+
+    .speech-text {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: #2D1E12;
+      line-height: 1.3;
+    }
+
+    /* TOP-VIEW KHONG WONG YAI STAGE (WELL-SPACED, NO OVERLAP) */
+    .khong-stage-outer {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 0;
+    }
+
+    .khong-stage {
+      position: relative;
+      width: 100%;
+      max-width: 530px;
+      aspect-ratio: 1.05 / 1;
+    }
+
+    .khong-frame-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: drop-shadow(0 12px 16px rgba(74, 46, 27, 0.25));
+    }
+
+    /* Center Status Card inside Horseshoe */
+    .center-hud {
+      position: absolute;
+      top: 54%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44%;
+      background: rgba(255, 252, 242, 0.96);
+      border: 2px solid #E5C17B;
+      border-radius: 20px;
+      padding: 8px 10px;
+      text-align: center;
+      pointer-events: none;
+      z-index: 5;
+      box-shadow: 0 4px 12px rgba(74, 46, 27, 0.08);
+    }
+
+    .center-rhythm-top {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #92400E;
+      margin-bottom: 1px;
+    }
+
+    .center-target-note {
+      font-family: 'Mitr', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #3E2723;
+      line-height: 1.1;
+    }
+
+    .center-hand-pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      color: #FFF;
+      background: #2563EB;
+      margin: 3px 0;
+    }
+
+    .center-sub {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #065F46;
+    }
+
+    /* 16 Top-View Brass Gong Buttons */
+    .gong-btn {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 11.4%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      border: 2px solid #78350F;
+      background: radial-gradient(circle at 32% 30%, #FFFBEB 0%, #FDE047 30%, #F59E0B 72%, #92400E 100%);
+      box-shadow:
+        0 4px 0 #5C2D0C,
+        0 6px 10px rgba(0,0,0,0.28),
+        inset 0 2px 3px rgba(255,255,255,0.85);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      z-index: 10;
+      transition: transform 0.06s ease, box-shadow 0.06s ease;
+    }
+
+    .gong-boss {
+      width: 66%;
+      height: 66%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #FEF08A 42%, #D97706 88%, #78350F 100%);
+      border: 1.5px solid rgba(120, 53, 15, 0.5);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Mitr', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.78rem, 2.7vw, 1.15rem);
+      color: #2D1202;
+      line-height: 1;
+    }
+
+    .gong-btn:active, .gong-btn.pressed {
+      transform: translate(-50%, -46%) scale(0.92);
+      box-shadow: 0 1px 0 #5C2D0C, 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    /* Hand Tag Pill on Active Gong */
+    .gong-hand-tag {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      color: #FFF;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    .gong-btn.cue-left {
+      box-shadow:
+        0 0 0 4px #3B82F6,
+        0 0 18px 5px rgba(59, 130, 246, 0.85),
+        0 4px 0 #1E3A8A;
+      animation: pulseGong 0.85s infinite alternate;
+      z-index: 16;
+    }
+
+    .gong-btn.cue-right {
+      box-shadow:
+        0 0 0 4px #F97316,
+        0 0 18px 5px rgba(249, 115, 22, 0.85),
+        0 4px 0 #7C2D12;
+      animation: pulseGong 0.85s infinite alternate;
+      z-index: 16;
+    }
+
+    @keyframes pulseGong {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -53%) scale(1.08); }
+    }
+
+    /* Bottom Action Buttons */
+    .bottom-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-action {
+      flex: 1;
+      padding: 11px 10px;
+      border-radius: 14px;
+      border: none;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-demo {
+      background: #059669;
+      color: #FFF;
+      box-shadow: 0 4px 0 #065F46;
+    }
+
+    .btn-demo.playing {
+      background: #DC2626;
+      box-shadow: 0 4px 0 #991B1B;
+    }
+
+    .btn-reset {
+      background: #F3E5AB;
+      color: #4A2E1B;
+      box-shadow: 0 4px 0 #C8A951;
+    }
+
+    /* =========================================================================
+       LANDSCAPE FULLSCREEN MODE
+    ========================================================================= */
+    body.landscape-fullscreen {
+      overflow: hidden;
+      background: var(--bg-cream);
+    }
+
+    body.landscape-fullscreen .topbar,
+    body.landscape-fullscreen .practice-toolbar,
+    body.landscape-fullscreen .part-switcher,
+    body.landscape-fullscreen .bottom-actions,
+    body.landscape-fullscreen .speech-header {
+      display: none !important;
+    }
+
+    body.landscape-fullscreen .main-container {
+      max-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 4px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media screen and (orientation: portrait) {
+      body.landscape-fullscreen .main-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 100vh;
+        height: 100vw;
+        transform: translate(-50%, -50%) rotate(90deg);
+        z-index: 999;
+        background: var(--bg-cream);
+        padding: 4px 14px;
+      }
+    }
+
+    body.landscape-fullscreen .practice-wrapper {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2px;
+    }
+
+    body.landscape-fullscreen .companion-strip {
+      width: 100%;
+      max-width: 860px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      min-height: 0;
+      padding: 2px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+
+    body.landscape-fullscreen .btn-landscape-back {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1.5px solid #D9A76A;
+      background: #FFF9EB;
+      color: #4A2E1B;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    body.landscape-fullscreen .companion-avatar {
+      width: 44px;
+      height: 48px;
+    }
+
+    body.landscape-fullscreen .speech-box {
+      flex: 0 1 auto;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid #E5C17B;
+      border-radius: 999px;
+      padding: 5px 14px;
+      box-shadow: 0 2px 8px rgba(139, 90, 43, 0.08);
+    }
+
+    body.landscape-fullscreen .speech-text {
+      font-size: 0.88rem;
+      white-space: nowrap;
+    }
+
+    body.landscape-fullscreen .khong-stage-outer {
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 54px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    body.landscape-fullscreen .khong-stage {
+      height: 100%;
+      width: auto;
+      max-width: 96vw;
+      aspect-ratio: 1.08 / 1;
+      margin: 0 auto;
+    }
+
+    body.landscape-fullscreen .gong-boss {
+      font-size: clamp(0.9rem, 2.8vmin, 1.35rem);
+    }
+
+    /* ==================== TEACHER DASHBOARD MODAL ==================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 30, 18, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      z-index: 1000;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+    }
+
+    .modal-card {
+      background: #FFF;
+      border-radius: 22px;
+      max-width: 740px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 18px;
+      border: 3px solid #D9A76A;
+    }
+
+    .tab-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+      border-bottom: 2px solid #F3E5AB;
+      padding-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1.5px solid #D9A76A;
+      background: #FFF9EB;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #4A2E1B;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #D97706;
+      border-color: #92400E;
+      color: #FFF;
+    }
+
+    table.stat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 8px;
+    }
+
+    table.stat-table th, table.stat-table td {
+      border: 1px solid #E5C17B;
+      padding: 7px;
+      text-align: left;
+    }
+
+    table.stat-table th {
+      background: #FEF3C7;
+      color: #78350F;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="topbar" id="main-topbar">
+    <div class="brand">
+      <div class="brand-icon">ฆ</div>
+      <span class="brand-title">KhongMaster</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button type="button" class="btn-teacher" id="btn-topbar-teacher" onclick="openTeacherModal()">
+        🔒 โหมดครูผู้สอน
+      </button>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- ==================== หน้าที่ 1: หน้าล็อกอินด้วยรหัสนักศึกษา ==================== -->
+    <section id="screen-login" class="card" style="text-align:center;">
+      <div class="badge-welcome">✨ ยินดีต้อนรับสู่ห้องซ้อมฆ้องวงใหญ่เสมือนจริง</div>
+      <h1 style="margin:4px 0 6px; font-size:1.6rem; color:#3E2723;">เข้าสู่ระบบฝึกซ้อม</h1>
+      <p style="margin:0 0 10px; font-size:0.88rem; color:#6D4C41;">
+        กรอกรหัสนักศึกษาของตนเองเพื่อเข้าสู่ภารกิจฝึกซ้อมและบันทึกสถิติ
+      </p>
+
+      <!-- แถวโชว์ตัวการ์ตูนจิบิทั้ง 5 ตัว -->
+      <div class="chibi-showcase">
+        <div class="chibi-item">
+          <div class="chibi-svg-wrap" id="preview-boom"></div>
+          <div class="chibi-name">ครูบูม</div>
+          <div class="chibi-desc">สายอบอุ่น</div>
+        </div>
+        <div class="chibi-item">
+          <div class="chibi-svg-wrap" id="preview-kati"></div>
+          <div class="chibi-name">น้องกะทิ</div>
+          <div class="chibi-desc">เหมียวกวน</div>
+        </div>
+        <div class="chibi-item">
+          <div class="chibi-svg-wrap" id="preview-khun"></div>
+          <div class="chibi-name">พี่ขุน</div>
+          <div class="chibi-desc">รุ่นพี่สายชิล</div>
+        </div>
+        <div class="chibi-item">
+          <div class="chibi-svg-wrap" id="preview-mali"></div>
+          <div class="chibi-name">น้องมะลิ</div>
+          <div class="chibi-desc">เพื่อนสายเป๊ะ</div>
+        </div>
+        <div class="chibi-item">
+          <div class="chibi-svg-wrap" id="preview-phloen"></div>
+          <div class="chibi-name" style="color:#6D28D9;">น้องเพลิน</div>
+          <div class="chibi-desc" style="color:#7C3AED;">สายขิงหน้านิ่ง</div>
+        </div>
+      </div>
+
+      <label class="form-label" for="student-id-input">🔑 กรอกรหัสนักศึกษา (Student ID)</label>
+      <input
+        type="text"
+        id="student-id-input"
+        class="student-input"
+        placeholder="เช่น 6901, 6902, 6801, 6701"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') handleLoginStart()"
+      />
+
+      <button type="button" class="btn-primary" onclick="handleLoginStart()">
+        🥁 เข้าสู่หน้าภารกิจทั้ง 10 ด่าน!
+      </button>
+    </section>
+
+    <!-- ==================== หน้าที่ 2: หน้าเลือกด่านทั้ง 10 ด่าน ==================== -->
+    <section id="screen-stages" class="hidden">
+      <div class="student-banner">
+        <div>
+          <div style="font-size:0.78rem; color:#92400E; font-weight:700;">ผู้เข้าฝึกซ้อม</div>
+          <div id="banner-student-name" style="font-family:'Mitr',sans-serif; font-size:1.1rem; font-weight:700; color:#3E2723;">-</div>
+          <div id="banner-student-progress" style="font-size:0.8rem; color:#065F46; font-weight:600; margin-top:2px;">ผ่านแล้ว 0/10 ด่าน</div>
+        </div>
+        <button type="button" class="mini-btn" onclick="logoutToLogin()">🚪 ออกจากระบบ</button>
+      </div>
+
+      <h2 style="margin:0 0 10px; font-size:1.2rem; color:#4A2E1B;">🎯 เลือกด่านแบบฝึกหัดทักษะฆ้องวงใหญ่ (10 ด่าน)</h2>
+      <div class="stages-grid" id="stages-list-container"></div>
+    </section>
+
+    <!-- ==================== หน้าที่ 3: หน้าฝึกตีฆ้องวงใหญ่ ==================== -->
+    <section id="screen-practice" class="practice-wrapper hidden">
+
+      <!-- แถบเครื่องมือด้านบน (แสดงเฉพาะตอนแนวตั้ง) -->
+      <div class="practice-toolbar">
+        <button type="button" class="mini-btn" onclick="backToStagesMap()">
+          ⬅️ กลับหน้าด่าน
+        </button>
+        <div class="current-stage-badge" id="practice-stage-title">ด่านที่ 1</div>
+        <div style="display:flex; gap:5px;">
+          <button type="button" id="btn-metronome-main" class="mini-btn" onclick="toggleMetronomeLoop()">
+            🔔 ฉิ่ง-ฉับ: ปิด
+          </button>
+          <button type="button" id="btn-toggle-landscape" class="mini-btn" onclick="toggleLandscapeFullscreen()">
+            🔄 ขยายแนวนอน
+          </button>
+        </div>
+      </div>
+
+      <!-- แถบเลือกช่วงฝึกซ้อม (แสดงอัตโนมัติเฉพาะด่านที่มี ขาลง/ขาขึ้น หรือ 2 ช่วง เพื่อไม่ให้นิ้วล้า) -->
+      <div id="part-switcher-bar" class="part-switcher hidden"></div>
+
+      <!-- แถบตัวการ์ตูนจิบิและข้อความพูด -->
+      <div class="companion-strip">
+        <button type="button" class="btn-landscape-back" onclick="exitLandscapeOrBack()">
+          ⬅️ ย้อนกลับ
+        </button>
+        <button type="button" id="btn-metronome-land" class="btn-landscape-back" onclick="toggleMetronomeLoop()">
+          🔔 ฉิ่ง-ฉับ: ปิด
+        </button>
+        <div class="companion-avatar" id="active-chibi-avatar"></div>
+        <div class="speech-box">
+          <div class="speech-header">
+            <span class="mascot-badge" id="active-mascot-name">ครูบูม</span>
+            <span class="ching-badge" id="rhythm-indicator">เมโทรนอม • ปิด</span>
+          </div>
+          <div class="speech-text" id="mascot-speech-text">
+            จังหวะนี้ใช้มือขวาตีลูก มํ นะครับ
+          </div>
+        </div>
+      </div>
+
+      <!-- วงฆ้องวงใหญ่แบบท็อปวิว (Top-View 16 ลูก ไม่ซ้อนทับกัน) -->
+      <div class="khong-stage-outer">
+        <div class="khong-stage" id="khong-stage">
+
+          <!-- เรือนฆ้องวงใหญ่ท็อปวิว -->
+          <svg class="khong-frame-svg" viewBox="0 0 500 475" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="woodMain" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#C88A4B" />
+                <stop offset="50%" stop-color="#8B5A2B" />
+                <stop offset="100%" stop-color="#5C3A21" />
+              </linearGradient>
+            </defs>
+            <path d="M 118 422 A 208 208 0 1 1 382 422"
+                  fill="none" stroke="#3B2210" stroke-width="64" stroke-linecap="round" />
+            <path d="M 118 422 A 208 208 0 1 1 382 422"
+                  fill="none" stroke="url(#woodMain)" stroke-width="56" stroke-linecap="round" />
+            <path d="M 118 422 A 208 208 0 1 1 382 422"
+                  fill="none" stroke="#2D180A" stroke-width="34" stroke-linecap="round" />
+            <path d="M 118 422 A 208 208 0 1 1 382 422"
+                  fill="none" stroke="#E6C280" stroke-width="2.5" stroke-dasharray="9 7" stroke-linecap="round" />
+          </svg>
+
+          <!-- กล่องบอกโน้ตตรงกลางวงฆ้อง -->
+          <div class="center-hud">
+            <div class="center-rhythm-top" id="center-rhythm-label">ห้อง 1 • จังหวะ 1</div>
+            <div class="center-target-note" id="center-note-display">มํ</div>
+            <div class="center-hand-pill" id="center-hand-display">มือขวา</div>
+            <div class="center-sub" id="center-progress-display">โน้ตที่ 1/32 • แม่นยำ 100%</div>
+          </div>
+
+          <!-- ปุ่มลูกฆ้องทั้ง 16 ลูก (รฺ - มํ) -->
+          <div id="gongs-layer"></div>
+        </div>
+      </div>
+
+      <!-- ปุ่มฟังสาธิตและเริ่มด่านใหม่ -->
+      <div class="bottom-actions">
+        <button type="button" id="btn-demo-play" class="btn-action btn-demo" onclick="toggleDemoSequence()">
+          ▶️ ฟังสาธิต
+        </button>
+        <button type="button" class="btn-action btn-reset" onclick="resetCurrentExercise()">
+          🔄 เริ่มรอบนี้ใหม่
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==================== หน้าต่างยืนยันรหัสผ่านเข้าโหมดครูผู้สอน ==================== -->
+  <div class="modal-backdrop" id="teacher-auth-modal" onclick="if(event.target===this) closeTeacherAuthModal()">
+    <div class="modal-card" id="teacher-auth-card" style="max-width:400px; text-align:center; padding:22px 20px;">
+      <div style="width:54px; height:54px; margin:0 auto 10px; border-radius:50%; background:#FEF3C7; border:2px solid #F59E0B; display:flex; align-items:center; justify-content:center; font-size:1.6rem;">
+        🔐
+      </div>
+      <h2 style="margin:0 0 4px; font-size:1.25rem; color:#4A2E1B;">ยืนยันสิทธิ์โหมดครูผู้สอน</h2>
+      <p style="margin:0 0 14px; font-size:0.86rem; color:#6D4C41;">
+        กรุณากรอกรหัสผ่านผู้สอนเพื่อเข้าถึงการแก้ไขโน้ต 10 ด่าน รหัสนักศึกษา และสถิติการฝึกซ้อม
+      </p>
+
+      <div style="position:relative; margin-bottom:8px;">
+        <input
+          type="password"
+          id="teacher-pwd-input"
+          class="student-input"
+          style="margin-bottom:0; padding-right:46px;"
+          placeholder="กรอกรหัสผ่านผู้สอน..."
+          autocomplete="current-password"
+          onkeydown="if(event.key==='Enter') verifyTeacherPassword()"
+        />
+        <button
+          type="button"
+          id="btn-toggle-pwd"
+          onclick="toggleTeacherPwdVisibility()"
+          title="แสดง/ซ่อนรหัสผ่าน"
+          style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:1.15rem; cursor:pointer; padding:4px;"
+        >👁️</button>
+      </div>
+
+      <div id="teacher-auth-error" style="min-height:20px; font-size:0.82rem; font-weight:600; color:#DC2626; margin-bottom:10px;"></div>
+
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="mini-btn" style="flex:1; justify-content:center; padding:11px;" onclick="closeTeacherAuthModal()">
+          ยกเลิก
+        </button>
+        <button type="button" class="btn-primary" style="flex:2; padding:11px 16px; font-size:1rem;" onclick="verifyTeacherPassword()">
+          🔓 ปลดล็อกเข้าใช้งาน
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== โหมดครูผู้สอน ==================== -->
+  <div class="modal-backdrop" id="teacher-modal">
+    <div class="modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap;">
+        <h2 style="margin:0; font-size:1.25rem; color:#4A2E1B;">👨‍🏫 โหมดครูผู้สอน (จัดการระบบและแบบฝึกหัด)</h2>
+        <div style="display:flex; gap:6px; align-items:center;">
+          <button type="button" class="mini-btn" style="background:#FEF2F2; border-color:#FCA5A5; color:#B91C1C;" onclick="lockTeacherMode()" title="ล็อกรหัสผ่านทันทีก่อนส่งเครื่องให้นักศึกษา">
+            🔒 ล็อกโหมดครู
+          </button>
+          <button type="button" class="mini-btn" onclick="closeTeacherModal()">✖ ปิด</button>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <button type="button" class="tab-btn active" id="tab-btn-ex" onclick="switchTeacherTab('ex')">🎼 1. แก้ไขแบบฝึกหัด 10 ด่าน</button>
+        <button type="button" class="tab-btn" id="tab-btn-stu" onclick="switchTeacherTab('stu')">👩‍🎓 2. รหัสนักศึกษา 7 คน</button>
+        <button type="button" class="tab-btn" id="tab-btn-log" onclick="switchTeacherTab('log')">📊 3. สถิติ & Google Sheets</button>
+      </div>
+
+      <!-- แท็บที่ 1: แก้ไขแบบฝึกหัดทั้ง 10 ด่าน -->
+      <div id="teacher-tab-ex">
+        <div style="display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap;">
+          <label style="font-weight:700; font-size:0.9rem;">เลือกด่าน:</label>
+          <select id="editor-stage-select" class="mini-btn" style="padding:8px 10px; font-size:0.86rem;" onchange="loadStageIntoEditor(this.value, 0)"></select>
+          <select id="editor-part-select" class="mini-btn hidden" style="padding:8px 10px; font-size:0.86rem;" onchange="loadStageIntoEditor(editingStageIndex, this.value)"></select>
+        </div>
+
+        <div style="margin-bottom:10px;">
+          <label style="font-weight:700; font-size:0.85rem; display:block; margin-bottom:4px;">ชื่อด่านแบบฝึกหัด:</label>
+          <input type="text" id="editor-stage-title" style="width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid #D9A76A; font-family:'Kanit',sans-serif; font-weight:600;" />
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-weight:700; font-size:0.86rem; color:#4A2E1B;">ลำดับโน้ต (ระบุห้อง + ตัวที่ 1–4 เพื่อเว้นวรรค "-" และตรงจังหวะฉิ่ง-ฉับ):</span>
+          <button type="button" class="mini-btn" style="background:#DCFCE7; border-color:#16A34A; color:#166534;" onclick="addEditorStep()">+ เพิ่มจังหวะโน้ต</button>
+        </div>
+
+        <div id="editor-steps-container" style="max-height:280px; overflow-y:auto; border:1.5px solid #EED9B3; border-radius:12px; padding:8px; background:#FFFDF9; margin-bottom:12px;"></div>
+
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button type="button" class="mini-btn" onclick="resetDefaultExercises()">คืนค่าแบบฝึกหัดต้นฉบับ</button>
+          <button type="button" class="mini-btn active-mode" style="background:#059669; border-color:#047857;" onclick="saveEditedExercise()">💾 บันทึกแบบฝึกหัดด่านนี้</button>
+        </div>
+      </div>
+
+      <!-- แท็บที่ 2: แก้ไขรหัสและชื่อนักศึกษา 7 คน -->
+      <div id="teacher-tab-stu" class="hidden">
+        <p style="margin:0 0 8px; font-size:0.85rem; color:#6D4C41;">
+          กำหนดรหัสนักศึกษา (สำหรับใช้กรอกล็อกอินหน้าแรก) และชื่อ-นามสกุลจริงของนักศึกษาทั้ง 7 คน:
+        </p>
+        <div id="student-editor-list" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;"></div>
+        <button type="button" class="mini-btn active-mode" onclick="saveStudentDirectory()">💾 บันทึกรายชื่อและรหัสนักศึกษา</button>
+      </div>
+
+      <!-- แท็บที่ 3: สถิติและลิงก์ Google Sheets -->
+      <div id="teacher-tab-log" class="hidden">
+        <div style="background:#FFFBEB; border:1.5px solid #F59E0B; border-radius:14px; padding:12px; margin-bottom:14px;">
+          <label style="font-weight:700; font-size:0.85rem; display:block; margin-bottom:6px;">
+            🔗 Google Apps Script Web App URL (ส่งสถิติเข้า Google Sheets อัตโนมัติ):
+          </label>
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="gas-url-input" placeholder="https://script.google.com/macros/s/.../exec"
+                   style="flex:1; padding:8px 10px; border-radius:10px; border:1.5px solid #D9A76A; font-family:'Kanit',sans-serif;" />
+            <button type="button" class="mini-btn active-mode" onclick="saveGasUrl()">บันทึก URL</button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 style="margin:0; font-size:0.95rem;">📊 ประวัติการฝึกซ้อม (Digital SRL Log)</h3>
+          <button type="button" class="mini-btn" onclick="exportLogsCSV()">📥 ดาวน์โหลดไฟล์ Excel (CSV)</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="stat-table">
+            <thead>
+              <tr>
+                <th>เวลา</th>
+                <th>รหัส</th>
+                <th>ชื่อนักศึกษา</th>
+                <th>ด่าน / ช่วงที่ซ้อม</th>
+                <th>ความแม่นยำ</th>
+                <th>สถานะ</th>
+              </tr>
+            </thead>
+            <tbody id="log-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. ข้อมูลลูกฆ้อง 16 ลูก (รฺ - มํ) และระบบ Web Audio API AudioBuffer (0ms Latency)
+    ========================================================================= */
+    const GONG_NOTES = [
+      { id: 0,  label: 'รฺ', freq: 293.66, file: 'sounds/gong1.mp3' },
+      { id: 1,  label: 'มฺ', freq: 329.63, file: 'sounds/gong2.mp3' },
+      { id: 2,  label: 'ฟฺ', freq: 349.23, file: 'sounds/gong3.mp3' },
+      { id: 3,  label: 'ซฺ', freq: 392.00, file: 'sounds/gong4.mp3' },
+      { id: 4,  label: 'ลฺ', freq: 440.00, file: 'sounds/gong5.mp3' },
+      { id: 5,  label: 'ทฺ', freq: 493.88, file: 'sounds/gong6.mp3' },
+      { id: 6,  label: 'ด',  freq: 523.25, file: 'sounds/gong7.mp3' },
+      { id: 7,  label: 'ร',  freq: 587.33, file: 'sounds/gong8.mp3' },
+      { id: 8,  label: 'ม',  freq: 659.25, file: 'sounds/gong9.mp3' },
+      { id: 9,  label: 'ฟ',  freq: 698.46, file: 'sounds/gong10.mp3' },
+      { id: 10, label: 'ซ',  freq: 783.99, file: 'sounds/gong11.mp3' },
+      { id: 11, label: 'ล',  freq: 880.00, file: 'sounds/gong12.mp3' },
+      { id: 12, label: 'ท',  freq: 987.77, file: 'sounds/gong13.mp3' },
+      { id: 13, label: 'ดํ', freq: 1046.50, file: 'sounds/gong14.mp3' },
+      { id: 14, label: 'รํ', freq: 1174.66, file: 'sounds/gong15.mp3' },
+      { id: 15, label: 'มํ', freq: 1318.51, file: 'sounds/gong16.mp3' }
+    ];
+
+    // Buffer เสียงจริงแบบ Web Audio API (แม่นยำระดับ 0ms ไม่ดีเลย์บนมือถือ/iPad)
+    const gongAudioBuffers = {};
+    const chingAudioBuffers = { ching: null, chap: null };
+    // Fallback HTMLAudio สำหรับกรณีเปิดผ่าน file:// บนคอมพิวเตอร์โดยตรง
+    const loadedRealGongs = {};
+    const loadedRealChing = { ching: null, chap: null };
+    let buffersPreloadTriggered = false;
+
+    async function decodeFileToBuffer(url) {
+      if (!audioCtx || window.location.protocol === 'file:') return null;
+      try {
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const arrBuf = await res.arrayBuffer();
+        return await audioCtx.decodeAudioData(arrBuf);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function preloadWebAudioBuffers() {
+      if (buffersPreloadTriggered || !audioCtx || window.location.protocol === 'file:') return;
+      buffersPreloadTriggered = true;
+      GONG_NOTES.forEach(async (g) => {
+        const buf = await decodeFileToBuffer(g.file);
+        if (buf) gongAudioBuffers[g.id] = buf;
+      });
+      decodeFileToBuffer('sounds/ching.mp3').then(buf => { if (buf) chingAudioBuffers.ching = buf; });
+      decodeFileToBuffer('sounds/chap.mp3').then(buf => { if (buf) chingAudioBuffers.chap = buf; });
+    }
+
+    function preloadCustomSoundsSilently() {
+      GONG_NOTES.forEach(g => {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = g.file;
+        audio.addEventListener('canplaythrough', () => {
+          loadedRealGongs[g.id] = audio;
+        }, { once: true });
+      });
+
+      const chingAudio = new Audio('sounds/ching.mp3');
+      chingAudio.addEventListener('canplaythrough', () => {
+        loadedRealChing.ching = chingAudio;
+      }, { once: true });
+
+      const chapAudio = new Audio('sounds/chap.mp3');
+      chapAudio.addEventListener('canplaythrough', () => {
+        loadedRealChing.chap = chapAudio;
+      }, { once: true });
+    }
+
+    /* =========================================================================
+       2. ฐานข้อมูลรหัสนักศึกษา 7 คน (ชั้นปีที่ 1-3)
+    ========================================================================= */
+    const DEFAULT_STUDENTS = [
+      { code: '6901', name: 'นักศึกษาชั้นปีที่ 1 คนที่ 1', year: 1 },
+      { code: '6902', name: 'นักศึกษาชั้นปีที่ 1 คนที่ 2', year: 1 },
+      { code: '6903', name: 'นักศึกษาชั้นปีที่ 1 คนที่ 3', year: 1 },
+      { code: '6801', name: 'นักศึกษาชั้นปีที่ 2 คนที่ 1', year: 2 },
+      { code: '6802', name: 'นักศึกษาชั้นปีที่ 2 คนที่ 2', year: 2 },
+      { code: '6803', name: 'นักศึกษาชั้นปีที่ 2 คนที่ 3', year: 2 },
+      { code: '6701', name: 'นักศึกษาชั้นปีที่ 3 คนที่ 1', year: 3 }
+    ];
+
+    /* =========================================================================
+       3. ตัวการ์ตูนจิบิทั้ง 5 คาแรคเตอร์ (สุ่มอัตโนมัติ)
+    ========================================================================= */
+    const MASCOT_KEYS = ['boom', 'kati', 'khun', 'mali', 'phloen'];
+
+    function getChibiSVG(mascotKey, mood = 'normal') {
+      const isSavage = (mascotKey === 'phloen' && mood === 'normal');
+      let eyesMarkup = '';
+
+      if (mood === 'happy') {
+        eyesMarkup = `
+          <ellipse cx="38" cy="42" rx="7.5" ry="8.5" fill="#1F1209"/>
+          <ellipse cx="62" cy="42" rx="7.5" ry="8.5" fill="#1F1209"/>
+          <circle cx="35.5" cy="39" r="3.2" fill="#FFF"/>
+          <circle cx="59.5" cy="39" r="3.2" fill="#FFF"/>
+          <polygon points="40,44 42,41 44,44 42,47" fill="#FDE047"/>
+          <polygon points="64,44 66,41 68,44 66,47" fill="#FDE047"/>
+        `;
+      } else if (mood === 'wrong') {
+        eyesMarkup = `
+          <path d="M 31 38 L 43 43 L 31 47" fill="none" stroke="#1F1209" stroke-width="3.2" stroke-linecap="round"/>
+          <path d="M 69 38 L 57 43 L 69 47" fill="none" stroke="#1F1209" stroke-width="3.2" stroke-linecap="round"/>
+        `;
+      } else if (isSavage) {
+        eyesMarkup = `
+          <ellipse cx="38" cy="43" rx="7" ry="7.5" fill="#2E1065"/>
+          <ellipse cx="62" cy="43" rx="7" ry="7.5" fill="#2E1065"/>
+          <circle cx="36" cy="41.5" r="2.8" fill="#FFF"/>
+          <circle cx="60" cy="41.5" r="2.8" fill="#FFF"/>
+          <rect x="30" y="34" width="16" height="6" fill="#FDE6D8"/>
+          <rect x="54" y="34" width="16" height="6" fill="#FDE6D8"/>
+          <line x1="30" y1="40" x2="46" y2="40" stroke="#4C1D95" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="54" y1="40" x2="70" y2="40" stroke="#4C1D95" stroke-width="2.5" stroke-linecap="round"/>
+        `;
+      } else {
+        eyesMarkup = `
+          <ellipse cx="38" cy="42" rx="7.2" ry="8.2" fill="#1F1209"/>
+          <ellipse cx="62" cy="42" rx="7.2" ry="8.2" fill="#1F1209"/>
+          <circle cx="35.5" cy="39" r="3" fill="#FFF"/>
+          <circle cx="59.5" cy="39" r="3" fill="#FFF"/>
+          <circle cx="40.5" cy="45.5" r="1.5" fill="#FFF"/>
+          <circle cx="64.5" cy="45.5" r="1.5" fill="#FFF"/>
+        `;
+      }
+
+      const mouthMarkup = mood === 'happy'
+        ? `<path d="M 44 52 Q 50 59 56 52 Z" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5"/>`
+        : mood === 'wrong'
+        ? `<ellipse cx="50" cy="54" rx="4" ry="3.5" fill="#7F1D1D"/>`
+        : isSavage
+        ? `<path d="M 45 53 L 55 52" stroke="#7F1D1D" stroke-width="2.2" stroke-linecap="round"/>`
+        : `<path d="M 45 52 Q 50 56 55 52" fill="none" stroke="#7F1D1D" stroke-width="2.2" stroke-linecap="round"/>`;
+
+      if (mascotKey === 'boom') {
+        return `<svg viewBox="0 0 100 115" width="100%" height="100%">
+          <rect x="34" y="66" width="32" height="30" rx="12" fill="#F59E0B" stroke="#4A2E1B" stroke-width="2.5"/>
+          <path d="M 50 66 L 50 96" stroke="#78350F" stroke-width="2"/>
+          <circle cx="29" cy="78" r="5.5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <circle cx="71" cy="76" r="5.5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <line x1="73" y1="76" x2="86" y2="60" stroke="#78350F" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="87" cy="58" r="5.5" fill="#EF4444" stroke="#FDE047" stroke-width="1.8"/>
+          <rect x="39" y="94" width="9" height="12" rx="4.5" fill="#3E2723"/>
+          <rect x="52" y="94" width="9" height="12" rx="4.5" fill="#3E2723"/>
+          <circle cx="50" cy="40" r="28" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2.8"/>
+          <path d="M 22 36 C 22 14, 78 14, 78 36 C 72 24, 58 22, 50 25 C 40 22, 28 25, 22 36 Z" fill="#27170E" stroke="#1F1209" stroke-width="2"/>
+          <ellipse cx="29" cy="47" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.55"/>
+          <ellipse cx="71" cy="47" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.55"/>
+          ${eyesMarkup}
+          <circle cx="38" cy="42" r="9.5" fill="none" stroke="#B45309" stroke-width="2.3"/>
+          <circle cx="62" cy="42" r="9.5" fill="none" stroke="#B45309" stroke-width="2.3"/>
+          <line x1="47.5" y1="42" x2="52.5" y2="42" stroke="#B45309" stroke-width="2.3"/>
+          ${mouthMarkup}
+        </svg>`;
+      }
+      if (mascotKey === 'kati') {
+        return `<svg viewBox="0 0 100 115" width="100%" height="100%">
+          <path d="M 64 88 Q 84 82 80 68" fill="none" stroke="#FFF8EB" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 64 88 Q 84 82 80 68" fill="none" stroke="#4A2E1B" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="35" y="66" width="30" height="28" rx="13" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2.5"/>
+          <rect x="37" y="65" width="26" height="6" rx="3" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.5"/>
+          <circle cx="50" cy="71" r="5" fill="#FDE047" stroke="#92400E" stroke-width="1.8"/>
+          <circle cx="31" cy="77" r="5" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2"/>
+          <circle cx="69" cy="77" r="5" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2"/>
+          <rect x="39" y="92" width="9" height="11" rx="4.5" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2"/>
+          <rect x="52" y="92" width="9" height="11" rx="4.5" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2"/>
+          <path d="M 22 28 L 32 18 L 38 26 Z" fill="#E6C29F" stroke="#4A2E1B" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M 78 28 L 68 18 L 62 26 Z" fill="#E6C29F" stroke="#4A2E1B" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="50" cy="41" r="28" fill="#FFF8EB" stroke="#4A2E1B" stroke-width="2.8"/>
+          <path d="M 45 15 L 45 23 M 50 14 L 50 24 M 55 15 L 55 23" stroke="#D9A76A" stroke-width="2.8" stroke-linecap="round"/>
+          <ellipse cx="28" cy="48" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.6"/>
+          <ellipse cx="72" cy="48" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.6"/>
+          ${eyesMarkup}
+          <path d="M 44 52 Q 47 56 50 52 Q 53 56 56 52" fill="none" stroke="#4A2E1B" stroke-width="2.3" stroke-linecap="round"/>
+          <line x1="16" y1="44" x2="25" y2="46" stroke="#4A2E1B" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="16" y1="50" x2="25" y2="50" stroke="#4A2E1B" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="84" y1="44" x2="75" y2="46" stroke="#4A2E1B" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="84" y1="50" x2="75" y2="50" stroke="#4A2E1B" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>`;
+      }
+      if (mascotKey === 'khun') {
+        return `<svg viewBox="0 0 100 115" width="100%" height="100%">
+          <rect x="34" y="66" width="32" height="30" rx="12" fill="#0284C7" stroke="#1E3A8A" stroke-width="2.5"/>
+          <ellipse cx="41" cy="68" rx="5.5" ry="4" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.8"/>
+          <ellipse cx="59" cy="68" rx="5.5" ry="4" fill="#EF4444" stroke="#7F1D1D" stroke-width="1.8"/>
+          <circle cx="29" cy="78" r="5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <circle cx="71" cy="78" r="5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <rect x="39" y="94" width="9" height="12" rx="4.5" fill="#1E293B"/>
+          <rect x="52" y="94" width="9" height="12" rx="4.5" fill="#1E293B"/>
+          <circle cx="50" cy="40" r="28" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2.8"/>
+          <path d="M 21 38 C 20 12, 80 12, 79 38 L 72 27 L 63 32 L 52 24 L 41 32 L 30 26 Z" fill="#1E293B" stroke="#0F172A" stroke-width="2"/>
+          <ellipse cx="29" cy="47" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.5"/>
+          <ellipse cx="71" cy="47" rx="4.5" ry="2.5" fill="#FB7185" opacity="0.5"/>
+          ${eyesMarkup}
+          ${mouthMarkup}
+        </svg>`;
+      }
+      if (mascotKey === 'mali') {
+        return `<svg viewBox="0 0 100 115" width="100%" height="100%">
+          <circle cx="23" cy="22" r="11" fill="#27170E" stroke="#1F1209" stroke-width="2.5"/>
+          <circle cx="77" cy="22" r="11" fill="#27170E" stroke="#1F1209" stroke-width="2.5"/>
+          <rect x="34" y="66" width="32" height="30" rx="12" fill="#F472B6" stroke="#831843" stroke-width="2.5"/>
+          <polygon points="44,68 56,68 50,74" fill="#BE185D"/>
+          <circle cx="29" cy="78" r="5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <circle cx="71" cy="78" r="5" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2"/>
+          <rect x="39" y="94" width="9" height="12" rx="4.5" fill="#831843"/>
+          <rect x="52" y="94" width="9" height="12" rx="4.5" fill="#831843"/>
+          <circle cx="50" cy="41" r="28" fill="#FDE6D8" stroke="#4A2E1B" stroke-width="2.8"/>
+          <path d="M 22 36 C 24 14, 76 14, 78 36 Q 64 26 50 30 Q 36 26 22 36 Z" fill="#27170E" stroke="#1F1209" stroke-width="2"/>
+          <circle cx="30" cy="26" r="5.5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+          <circle cx="70" cy="26" r="5.5" fill="#FFFFFF" stroke="#F59E0B" stroke-width="2"/>
+          <ellipse cx="29" cy="48" rx="5" ry="2.8" fill="#FB7185" opacity="0.65"/>
+          <ellipse cx="71" cy="48" rx="5" ry="2.8" fill="#FB7185" opacity="0.65"/>
+          ${eyesMarkup}
+          ${mouthMarkup}
+        </svg>`;
+      }
+      return `<svg viewBox="0 0 100 115" width="100%" height="100%">
+        <rect x="34" y="66" width="32" height="30" rx="12" fill="#7C3AED" stroke="#3B0764" stroke-width="2.5"/>
+        <rect x="33" y="74" width="34" height="9" rx="4.5" fill="#FDE6D8" stroke="#3B0764" stroke-width="2"/>
+        <rect x="39" y="94" width="9" height="12" rx="4.5" fill="#2E1065"/>
+        <rect x="52" y="94" width="9" height="12" rx="4.5" fill="#2E1065"/>
+        <path d="M 19 46 C 17 14, 83 14, 81 46 Z" fill="#4C1D95" stroke="#2E1065" stroke-width="2.5"/>
+        <circle cx="50" cy="41" r="27" fill="#FDE6D8" stroke="#3B0764" stroke-width="2.8"/>
+        <path d="M 23 34 C 25 15, 75 15, 77 34 L 23 34 Z" fill="#5B21B6" stroke="#2E1065" stroke-width="2"/>
+        <ellipse cx="29" cy="48" rx="4.5" ry="2.2" fill="#C084FC" opacity="0.55"/>
+        <ellipse cx="71" cy="48" rx="4.5" ry="2.2" fill="#C084FC" opacity="0.55"/>
+        ${eyesMarkup}
+        ${mouthMarkup}
+      </svg>`;
+    }
+
+    const MASCOT_DATA = {
+      boom: {
+        name: 'ครูบูม (สายอบอุ่น)',
+        guide: (note, handTxt) => `จังหวะนี้ใช้${handTxt}ตีลูก ${note} นะครับ`,
+        correct: ['เยี่ยมมากครับ น้ำหนักมือดีเลย ไปต่อลูกต่อไปกัน', 'แม่นยำมากครับ จำทางฆ้องได้เป๊ะเลย'],
+        wrong: (note, handTxt) => `ใจเย็นๆ ครับ เมื่อกี้กดผิดลูก ต้องใช้${handTxt}ตีลูก ${note} นะครับ`,
+        finish: 'จำทางฆ้องครบ 1 รอบแล้ว ยอดเยี่ยมมากครับ พร้อมลงซ้อมฆ้องจริงแล้ว คะแนนทะลุเป้าแน่ๆ!'
+      },
+      kati: {
+        name: 'น้องกะทิ (เหมียวกวน)',
+        guide: (note, handTxt) => `จังหวะนี้ใช้${handTxt}ตีลูก ${note} นะเจ้ามนุษย์ เหมียว!`,
+        correct: ['เหมียว! ตีแม่นแบบนี้เดี๋ยวแบ่งปลาทูให้ครึ่งตัวเลย', 'ใช้ได้นี่นาเจ้ามนุษย์ กดตรงจังหวะเป๊ะเลย!'],
+        wrong: (note, handTxt) => `อุ๊ยเหมียว! ผิดลูกแล้ว ต้องใช้${handTxt}ตีลูก ${note} ต่างหากเล่า`,
+        finish: 'โห จำทางฆ้องจบ 1 รอบเป๊ะขนาดนี้ พักนิ้วแล้วไปตีฆ้องจริงเลย คะแนนทะลุเป้าแน่ๆ!'
+      },
+      khun: {
+        name: 'พี่ขุน (รุ่นพี่สายชิล)',
+        guide: (note, handTxt) => `จังหวะนี้${handTxt}จัดไปเลยลูก ${note} สบายมากน้อง!`,
+        correct: ['เฉียบมากวัยรุ่น! จังหวะกำลังไหลลื่นเลย', 'นั่นแหละน้องรัก ตีแม่นแบบนี้สบายบรื๋อ!'],
+        wrong: (note, handTxt) => `อ้าวเฮ้ย ผิดลูกซะงั้น ตั้งสติแล้วใช้${handTxt}กดลูก ${note} ใหม่ลุยต่อ!`,
+        finish: 'สุดจัดปลัดบอก! จำทางฆ้องได้คล่องแล้ว วันสอบจริงกับครูบูมคะแนนทะลุเป้าแน่ๆ!'
+      },
+      mali: {
+        name: 'น้องมะลิ (เพื่อนสายเป๊ะ)',
+        guide: (note, handTxt) => `จังหวะนี้ต้องใช้${handTxt}ตีลูก ${note} ให้ตรงจังหวะนะคะ`,
+        correct: ['เป๊ะมากค่ะ ทั้งตำแหน่งลูกฆ้องและจังหวะเลย', 'ถูกต้องค่ะ รักษาความสม่ำเสมอแบบนี้ไว้เลยนะคะ'],
+        wrong: (note, handTxt) => `ผิดตำแหน่งแล้วค่ะ ต้องใช้${handTxt}ตีลูก ${note} นะคะ ลองใหม่ค่ะ`,
+        finish: 'สมบูรณ์แบบมากค่ะ จบ 1 รอบแบบไม่ล้ามือ พร้อมไปลงเครื่องจริงแล้ว คะแนนทะลุเป้าแน่ๆ!'
+      },
+      phloen: {
+        name: 'น้องเพลิน (สายขิงหน้านิ่ง)',
+        guide: (note, handTxt) => `แค่นี้ก็ต้องให้บอก ใช้${handTxt}ตีลูก ${note} แค่นั้นเอง ยากตรงไหนเนี่ย`,
+        correct: ['ก็แค่กดถูกเอง อย่าเพิ่งได้ใจไปหน่อยเลยน่า', 'หือ กดแม่นเหมือนกันนี่ นึกว่าจะกดผิดซะอีก'],
+        wrong: (note, handTxt) => `โอ๊ย มือซ้ายกับมือขวาพันกันเป็นบะหมี่แล้ว ต้องใช้${handTxt}ตีลูก ${note} ต่างหากเล่า!`,
+        finish: 'จำจบครบ 1 รอบเนี่ยนะ? ฟลุ๊คหรือเปล่า แต่ก็นะ คะแนนทะลุเป้าแน่ๆ ยอมรับก็ได้ เชอะ!'
+      }
+    };
+
+    /* =========================================================================
+       4. ข้อมูลชุดแบบฝึกทักษะทั้ง 10 ด่านจริง (ผูกพิกัดห้อง-จังหวะ 4 ตัวต่อห้องครบถ้วน)
+       - ตัวที่ 2 = จังหวะยก
+       - ตัวที่ 4 = จังหวะตก (ห้องคี่ 1,3,5,7... = ฉิ่ง | ห้องคู่ 2,4,6,8... = ฉับ)
+       - เครื่องหมาย "-" คือเว้นจังหวะตามตารางโน้ตจริง
+    ========================================================================= */
+    const DEFAULT_EXERCISES = [{"title": "ด่านที่ 1: แบ่งไล่มือเพิ่มกำลัง", "subtitle": "ไล่เสียงลง-ขึ้นเต็มวง (มํ ➔ รฺ ➔ มํ) • ฝึก 1 รอบในแอป", "realPracticeNote": "ซ้อมบนฆ้องจริง: กลับต้นอย่างน้อย 4 รอบ (หรือ 30 นาทีเพื่อเพิ่มกำลังมือ)", "parts": [{"name": "ครบ 1 รอบ (8 ห้อง)", "totalBars": 8, "steps": [{"bar": 1, "beat": 1, "slot": 0, "left": -1, "right": 15, "ching": "ห้อง 1 • จังหวะ 1"}, {"bar": 1, "beat": 2, "slot": 1, "left": -1, "right": 14, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 13, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 12, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 11, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": -1, "right": 10, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 9, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 8, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": 7, "right": -1, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 6, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": 5, "right": -1, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 4, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 3, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 2, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": 1, "right": -1, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 0, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 1, "slot": 16, "left": 0, "right": -1, "ching": "ห้อง 5 • จังหวะ 1"}, {"bar": 5, "beat": 2, "slot": 17, "left": 1, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": 2, "right": -1, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 3, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 4, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 5, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": 6, "right": -1, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 7, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": -1, "right": 8, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": -1, "right": 9, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 10, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 11, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 12, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 13, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 14, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 15, "ching": "ห้อง 8 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 2: ไล่มือคู่ 8", "subtitle": "ตีประสานเสียงคู่แปดขนานเต็มวง • ฝึก 1 รอบในแอป", "realPracticeNote": "ซ้อมบนฆ้องจริง: กลับต้นอย่างน้อย 4 รอบ (หรือ 30 นาทีเพื่อเพิ่มกำลังมือ)", "parts": [{"name": "ครบ 1 รอบ (8 ห้อง)", "totalBars": 8, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": 8, "right": 15, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 4, "slot": 3, "left": 7, "right": 14, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 2, "slot": 5, "left": 6, "right": 13, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 4, "slot": 7, "left": 5, "right": 12, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 2, "slot": 9, "left": 4, "right": 11, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 4, "slot": 11, "left": 3, "right": 10, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 2, "slot": 13, "left": 2, "right": 9, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 4, "slot": 15, "left": 1, "right": 8, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": 0, "right": 7, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 4, "slot": 19, "left": 1, "right": 8, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 2, "slot": 21, "left": 2, "right": 9, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 4, "slot": 23, "left": 3, "right": 10, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 2, "slot": 25, "left": 4, "right": 11, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 4, "slot": 27, "left": 5, "right": 12, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 2, "slot": 29, "left": 6, "right": 13, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 4, "slot": 31, "left": 7, "right": 14, "ching": "ห้อง 8 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 3: แบ่งมือ 3 เสียง (สะบัด)", "subtitle": "แบ่งช่วงซ้อม ขาลง (ขวา-ซ้าย-ซ้าย) / ขาขึ้น (ซ้าย-ขวา-ขวา)", "realPracticeNote": "ซ้อมบนฆ้องจริง: กลับต้นอย่างน้อย 4 รอบ", "parts": [{"name": "🔽 เที่ยวขาลง (ขวา-ซ้าย-ซ้าย)", "totalBars": 14, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": -1, "right": 15, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": 14, "right": -1, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": 13, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 2, "slot": 5, "left": -1, "right": 14, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": 13, "right": -1, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 12, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 2, "slot": 9, "left": -1, "right": 13, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": 12, "right": -1, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 11, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 2, "slot": 13, "left": -1, "right": 12, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": 11, "right": -1, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 10, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": -1, "right": 11, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": 10, "right": -1, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 9, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 2, "slot": 21, "left": -1, "right": 10, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": 9, "right": -1, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 8, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 2, "slot": 25, "left": -1, "right": 9, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": 8, "right": -1, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 7, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 8, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 7, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 6, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 2, "slot": 33, "left": -1, "right": 7, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": 6, "right": -1, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": 5, "right": -1, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 2, "slot": 37, "left": -1, "right": 6, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": 5, "right": -1, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 4, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 2, "slot": 41, "left": -1, "right": 5, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": 4, "right": -1, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": 3, "right": -1, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 2, "slot": 45, "left": -1, "right": 4, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": 3, "right": -1, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 2, "right": -1, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 2, "slot": 49, "left": -1, "right": 3, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": 2, "right": -1, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": 1, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 2, "slot": 53, "left": -1, "right": 2, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": 1, "right": -1, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 0, "right": -1, "ching": "ห้อง 14 • ตก (ฉับ)"}]}, {"name": "🔼 เที่ยวขาขึ้น (ซ้าย-ขวา-ขวา)", "totalBars": 14, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": 0, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 1, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 2, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 2, "slot": 5, "left": 1, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 2, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 3, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 2, "slot": 9, "left": 2, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 3, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 4, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 2, "slot": 13, "left": 3, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 4, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 5, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": 4, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 5, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 6, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 2, "slot": 21, "left": 5, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 6, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 7, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 2, "slot": 25, "left": 6, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 7, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 8, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 2, "slot": 29, "left": 7, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 8, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 9, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 2, "slot": 33, "left": 8, "right": -1, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 9, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 10, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 2, "slot": 37, "left": 9, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 10, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": -1, "right": 11, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 2, "slot": 41, "left": 10, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 11, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 12, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 2, "slot": 45, "left": 11, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 12, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 13, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 2, "slot": 49, "left": 12, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 13, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 14, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 2, "slot": 53, "left": 13, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 14, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 15, "ching": "ห้อง 14 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 4: แบ่งมือ 4 เสียง", "subtitle": "แบ่งช่วงซ้อม ขาลง (ขวา-ขวา-ซ้าย-ซ้าย) / ขาขึ้น (ซ้าย-ซ้าย-ขวา-ขวา)", "realPracticeNote": "ซ้อมบนฆ้องจริง: กลับต้นอย่างน้อย 4 รอบ", "parts": [{"name": "🔽 เที่ยวขาลง (ขวา-ขวา-ซ้าย-ซ้าย)", "totalBars": 8, "steps": [{"bar": 1, "beat": 1, "slot": 0, "left": -1, "right": 15, "ching": "ห้อง 1 • จังหวะ 1"}, {"bar": 1, "beat": 2, "slot": 1, "left": -1, "right": 14, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": 13, "right": -1, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": 11, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 14, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": -1, "right": 13, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": 11, "right": -1, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 10, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": -1, "right": 13, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": -1, "right": 11, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": 10, "right": -1, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 8, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 11, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": -1, "right": 10, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": 8, "right": -1, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 7, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 1, "slot": 16, "left": -1, "right": 10, "ching": "ห้อง 5 • จังหวะ 1"}, {"bar": 5, "beat": 2, "slot": 17, "left": -1, "right": 8, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": 7, "right": -1, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 6, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": -1, "right": 8, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": -1, "right": 7, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": 6, "right": -1, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 4, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": -1, "right": 7, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": -1, "right": 6, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": 4, "right": -1, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 3, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 6, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 4, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 3, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 1, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}]}, {"name": "🔼 เที่ยวขาขึ้น (ซ้าย-ซ้าย-ขวา-ขวา)", "totalBars": 8, "steps": [{"bar": 1, "beat": 1, "slot": 0, "left": 0, "right": -1, "ching": "ห้อง 1 • จังหวะ 1"}, {"bar": 1, "beat": 2, "slot": 1, "left": 1, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 3, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 4, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 1, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 3, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 4, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 6, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": 3, "right": -1, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 4, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 6, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 7, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 4, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 6, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 7, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 8, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 1, "slot": 16, "left": 6, "right": -1, "ching": "ห้อง 5 • จังหวะ 1"}, {"bar": 5, "beat": 2, "slot": 17, "left": 7, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 8, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 10, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 7, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 8, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 10, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 11, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": 8, "right": -1, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": 10, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 11, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 13, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": 10, "right": -1, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 11, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 13, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 14, "ching": "ห้อง 8 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 5: แบ่งมือ 5 เสียง", "subtitle": "แบ่งช่วงซ้อม ขาลง (ขวา-ซ้าย×4) / ขาขึ้น (ซ้าย-ขวา×4)", "realPracticeNote": "ซ้อมบนฆ้องจริง: ฝึกต่อเนื่องให้ครบเที่ยวขาลงและขาขึ้น", "parts": [{"name": "🔽 เที่ยวขาลง (ขวา + ซ้าย 4 ตัว)", "totalBars": 24, "steps": [{"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 15, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 14, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 13, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": 12, "right": -1, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 11, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 14, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 13, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 12, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": 11, "right": -1, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 10, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 13, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 12, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 11, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": 10, "right": -1, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 9, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 12, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": 11, "right": -1, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 10, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 9, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 8, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 11, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": 10, "right": -1, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 9, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": 8, "right": -1, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 7, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 10, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": 9, "right": -1, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 8, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": 7, "right": -1, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 6, "right": -1, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 9, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 8, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 7, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": 6, "right": -1, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 5, "right": -1, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 4, "slot": 59, "left": -1, "right": 8, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": 7, "right": -1, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 6, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": 5, "right": -1, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 4, "right": -1, "ching": "ห้อง 16 • ตก (ฉับ)"}, {"bar": 17, "beat": 4, "slot": 67, "left": -1, "right": 7, "ching": "ห้อง 17 • ตก (ฉิ่ง)"}, {"bar": 18, "beat": 1, "slot": 68, "left": 6, "right": -1, "ching": "ห้อง 18 • จังหวะ 1"}, {"bar": 18, "beat": 2, "slot": 69, "left": 5, "right": -1, "ching": "ห้อง 18 • ยก"}, {"bar": 18, "beat": 3, "slot": 70, "left": 4, "right": -1, "ching": "ห้อง 18 • จังหวะ 3"}, {"bar": 18, "beat": 4, "slot": 71, "left": 3, "right": -1, "ching": "ห้อง 18 • ตก (ฉับ)"}, {"bar": 19, "beat": 4, "slot": 75, "left": -1, "right": 6, "ching": "ห้อง 19 • ตก (ฉิ่ง)"}, {"bar": 20, "beat": 1, "slot": 76, "left": 5, "right": -1, "ching": "ห้อง 20 • จังหวะ 1"}, {"bar": 20, "beat": 2, "slot": 77, "left": 4, "right": -1, "ching": "ห้อง 20 • ยก"}, {"bar": 20, "beat": 3, "slot": 78, "left": 3, "right": -1, "ching": "ห้อง 20 • จังหวะ 3"}, {"bar": 20, "beat": 4, "slot": 79, "left": 2, "right": -1, "ching": "ห้อง 20 • ตก (ฉับ)"}, {"bar": 21, "beat": 4, "slot": 83, "left": -1, "right": 5, "ching": "ห้อง 21 • ตก (ฉิ่ง)"}, {"bar": 22, "beat": 1, "slot": 84, "left": 4, "right": -1, "ching": "ห้อง 22 • จังหวะ 1"}, {"bar": 22, "beat": 2, "slot": 85, "left": 3, "right": -1, "ching": "ห้อง 22 • ยก"}, {"bar": 22, "beat": 3, "slot": 86, "left": 2, "right": -1, "ching": "ห้อง 22 • จังหวะ 3"}, {"bar": 22, "beat": 4, "slot": 87, "left": 1, "right": -1, "ching": "ห้อง 22 • ตก (ฉับ)"}, {"bar": 23, "beat": 4, "slot": 91, "left": -1, "right": 4, "ching": "ห้อง 23 • ตก (ฉิ่ง)"}, {"bar": 24, "beat": 1, "slot": 92, "left": 3, "right": -1, "ching": "ห้อง 24 • จังหวะ 1"}, {"bar": 24, "beat": 2, "slot": 93, "left": 2, "right": -1, "ching": "ห้อง 24 • ยก"}, {"bar": 24, "beat": 3, "slot": 94, "left": 1, "right": -1, "ching": "ห้อง 24 • จังหวะ 3"}, {"bar": 24, "beat": 4, "slot": 95, "left": 0, "right": -1, "ching": "ห้อง 24 • ตก (ฉับ)"}]}, {"name": "🔼 เที่ยวขาขึ้น (ซ้าย + ขวา 4 ตัว)", "totalBars": 24, "steps": [{"bar": 1, "beat": 4, "slot": 3, "left": 0, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": -1, "right": 2, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 3, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 4, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 4, "slot": 11, "left": 1, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 2, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": -1, "right": 3, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 4, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 5, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 4, "slot": 19, "left": 2, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": -1, "right": 3, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": -1, "right": 4, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 5, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 6, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 4, "slot": 27, "left": 3, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 4, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 5, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 6, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 7, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 4, "slot": 35, "left": 4, "right": -1, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": -1, "right": 5, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": -1, "right": 6, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 7, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": -1, "right": 8, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 4, "slot": 43, "left": 5, "right": -1, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": -1, "right": 6, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": -1, "right": 7, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 8, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 9, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 4, "slot": 51, "left": 6, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": -1, "right": 7, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": -1, "right": 8, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 9, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 10, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 4, "slot": 59, "left": 7, "right": -1, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 8, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": -1, "right": 9, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 10, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": -1, "right": 11, "ching": "ห้อง 16 • ตก (ฉับ)"}, {"bar": 17, "beat": 4, "slot": 67, "left": 8, "right": -1, "ching": "ห้อง 17 • ตก (ฉิ่ง)"}, {"bar": 18, "beat": 1, "slot": 68, "left": -1, "right": 9, "ching": "ห้อง 18 • จังหวะ 1"}, {"bar": 18, "beat": 2, "slot": 69, "left": -1, "right": 10, "ching": "ห้อง 18 • ยก"}, {"bar": 18, "beat": 3, "slot": 70, "left": -1, "right": 11, "ching": "ห้อง 18 • จังหวะ 3"}, {"bar": 18, "beat": 4, "slot": 71, "left": -1, "right": 12, "ching": "ห้อง 18 • ตก (ฉับ)"}, {"bar": 19, "beat": 4, "slot": 75, "left": 9, "right": -1, "ching": "ห้อง 19 • ตก (ฉิ่ง)"}, {"bar": 20, "beat": 1, "slot": 76, "left": -1, "right": 10, "ching": "ห้อง 20 • จังหวะ 1"}, {"bar": 20, "beat": 2, "slot": 77, "left": -1, "right": 11, "ching": "ห้อง 20 • ยก"}, {"bar": 20, "beat": 3, "slot": 78, "left": -1, "right": 12, "ching": "ห้อง 20 • จังหวะ 3"}, {"bar": 20, "beat": 4, "slot": 79, "left": -1, "right": 13, "ching": "ห้อง 20 • ตก (ฉับ)"}, {"bar": 21, "beat": 4, "slot": 83, "left": 10, "right": -1, "ching": "ห้อง 21 • ตก (ฉิ่ง)"}, {"bar": 22, "beat": 1, "slot": 84, "left": -1, "right": 11, "ching": "ห้อง 22 • จังหวะ 1"}, {"bar": 22, "beat": 2, "slot": 85, "left": -1, "right": 12, "ching": "ห้อง 22 • ยก"}, {"bar": 22, "beat": 3, "slot": 86, "left": -1, "right": 13, "ching": "ห้อง 22 • จังหวะ 3"}, {"bar": 22, "beat": 4, "slot": 87, "left": -1, "right": 14, "ching": "ห้อง 22 • ตก (ฉับ)"}, {"bar": 23, "beat": 4, "slot": 91, "left": 11, "right": -1, "ching": "ห้อง 23 • ตก (ฉิ่ง)"}, {"bar": 24, "beat": 1, "slot": 92, "left": -1, "right": 12, "ching": "ห้อง 24 • จังหวะ 1"}, {"bar": 24, "beat": 2, "slot": 93, "left": -1, "right": 13, "ching": "ห้อง 24 • ยก"}, {"bar": 24, "beat": 3, "slot": 94, "left": -1, "right": 14, "ching": "ห้อง 24 • จังหวะ 3"}, {"bar": 24, "beat": 4, "slot": 95, "left": -1, "right": 15, "ching": "ห้อง 24 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 6: สลับมือขวา ซ้าย", "subtitle": "แบ่งช่วงซ้อม ขาลง (18 ห้อง) / ขาขึ้น (16 ห้อง)", "realPracticeNote": "ซ้อมบนฆ้องจริง: ฝึกสลับมือขวา-ซ้ายให้สม่ำเสมอไม่สะดุด", "parts": [{"name": "🔽 เที่ยวขาลง (18 ห้อง)", "totalBars": 18, "steps": [{"bar": 1, "beat": 1, "slot": 0, "left": -1, "right": 15, "ching": "ห้อง 1 • จังหวะ 1"}, {"bar": 1, "beat": 2, "slot": 1, "left": 13, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 15, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": 14, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 15, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 13, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 14, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 11, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": -1, "right": 13, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 11, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 14, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 13, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 14, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 11, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 13, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 10, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 1, "slot": 16, "left": -1, "right": 11, "ching": "ห้อง 5 • จังหวะ 1"}, {"bar": 5, "beat": 2, "slot": 17, "left": 10, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 13, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 11, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": -1, "right": 13, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 10, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 11, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 8, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": -1, "right": 10, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": 8, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 11, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 10, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 11, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 8, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 10, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 7, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 1, "slot": 32, "left": -1, "right": 8, "ching": "ห้อง 9 • จังหวะ 1"}, {"bar": 9, "beat": 2, "slot": 33, "left": 7, "right": -1, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 10, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": 8, "right": -1, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": -1, "right": 10, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 7, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 8, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 6, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 1, "slot": 40, "left": -1, "right": 7, "ching": "ห้อง 11 • จังหวะ 1"}, {"bar": 11, "beat": 2, "slot": 41, "left": 6, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 8, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": 7, "right": -1, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": -1, "right": 8, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 6, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 7, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 4, "right": -1, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 1, "slot": 48, "left": -1, "right": 6, "ching": "ห้อง 13 • จังหวะ 1"}, {"bar": 13, "beat": 2, "slot": 49, "left": 4, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 7, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": 6, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": -1, "right": 7, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 4, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 6, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 3, "right": -1, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 1, "slot": 56, "left": -1, "right": 4, "ching": "ห้อง 15 • จังหวะ 1"}, {"bar": 15, "beat": 2, "slot": 57, "left": 3, "right": -1, "ching": "ห้อง 15 • ยก"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 6, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": 4, "right": -1, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 6, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 3, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 4, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 1, "right": -1, "ching": "ห้อง 16 • ตก (ฉับ)"}, {"bar": 17, "beat": 1, "slot": 64, "left": -1, "right": 3, "ching": "ห้อง 17 • จังหวะ 1"}, {"bar": 17, "beat": 2, "slot": 65, "left": 1, "right": -1, "ching": "ห้อง 17 • ยก"}, {"bar": 17, "beat": 3, "slot": 66, "left": -1, "right": 4, "ching": "ห้อง 17 • จังหวะ 3"}, {"bar": 17, "beat": 4, "slot": 67, "left": 3, "right": -1, "ching": "ห้อง 17 • ตก (ฉิ่ง)"}, {"bar": 18, "beat": 1, "slot": 68, "left": -1, "right": 4, "ching": "ห้อง 18 • จังหวะ 1"}, {"bar": 18, "beat": 2, "slot": 69, "left": 1, "right": -1, "ching": "ห้อง 18 • ยก"}, {"bar": 18, "beat": 3, "slot": 70, "left": -1, "right": 3, "ching": "ห้อง 18 • จังหวะ 3"}, {"bar": 18, "beat": 4, "slot": 71, "left": 0, "right": -1, "ching": "ห้อง 18 • ตก (ฉับ)"}]}, {"name": "🔼 เที่ยวขาขึ้น (16 ห้อง)", "totalBars": 16, "steps": [{"bar": 1, "beat": 1, "slot": 0, "left": -1, "right": 3, "ching": "ห้อง 1 • จังหวะ 1"}, {"bar": 1, "beat": 2, "slot": 1, "left": 0, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 3, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": 1, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 4, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 3, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 6, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 4, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": -1, "right": 6, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 1, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 4, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 3, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 6, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 4, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 7, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 6, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 1, "slot": 16, "left": -1, "right": 7, "ching": "ห้อง 5 • จังหวะ 1"}, {"bar": 5, "beat": 2, "slot": 17, "left": 3, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 6, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 4, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": -1, "right": 7, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 6, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 8, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 7, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": -1, "right": 8, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": 4, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 7, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 6, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 8, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 7, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 10, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 8, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 1, "slot": 32, "left": -1, "right": 10, "ching": "ห้อง 9 • จังหวะ 1"}, {"bar": 9, "beat": 2, "slot": 33, "left": 6, "right": -1, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 8, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": 7, "right": -1, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": -1, "right": 10, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 8, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 11, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 10, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 1, "slot": 40, "left": -1, "right": 11, "ching": "ห้อง 11 • จังหวะ 1"}, {"bar": 11, "beat": 2, "slot": 41, "left": 7, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 10, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": 8, "right": -1, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": -1, "right": 11, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 10, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 13, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 11, "right": -1, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 1, "slot": 48, "left": -1, "right": 13, "ching": "ห้อง 13 • จังหวะ 1"}, {"bar": 13, "beat": 2, "slot": 49, "left": 8, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 11, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": 10, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": -1, "right": 13, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 11, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 14, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 13, "right": -1, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 1, "slot": 56, "left": -1, "right": 14, "ching": "ห้อง 15 • จังหวะ 1"}, {"bar": 15, "beat": 2, "slot": 57, "left": 10, "right": -1, "ching": "ห้อง 15 • ยก"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 13, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": 11, "right": -1, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 14, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 13, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 15, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 14, "right": -1, "ching": "ห้อง 16 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 7: แบ่งมือรับ-ส่งทำนองซ้ำเสียง", "subtitle": "แบ่งช่วงซ้อม ขาลง (16 ห้อง) / ขาขึ้น (16 ห้อง)", "realPracticeNote": "ซ้อมบนฆ้องจริง: เน้นความแม่นยำของจังหวะเว้นแล้วย้ำเสียงซ้ำ", "parts": [{"name": "🔽 เที่ยวขาลง (16 ห้อง)", "totalBars": 16, "steps": [{"bar": 1, "beat": 3, "slot": 2, "left": 13, "right": -1, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 15, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 14, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 13, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 14, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 13, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 15, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 14, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 13, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 11, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 13, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 11, "right": -1, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 14, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 13, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 11, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 10, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 11, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 10, "right": -1, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 13, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 11, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": 10, "right": -1, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 8, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 10, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 8, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 10, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 8, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": 7, "right": -1, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 6, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 7, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 6, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 8, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 7, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": 6, "right": -1, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 4, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 6, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 4, "right": -1, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 7, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 6, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 4, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 3, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 4, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 3, "right": -1, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 6, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": -1, "right": 4, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": 3, "right": -1, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 1, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 3, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 1, "right": -1, "ching": "ห้อง 16 • ตก (ฉับ)"}]}, {"name": "🔼 เที่ยวขาขึ้น (16 ห้อง)", "totalBars": 16, "steps": [{"bar": 1, "beat": 3, "slot": 2, "left": 0, "right": -1, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": 1, "right": -1, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 3, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": -1, "right": 4, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": 3, "right": -1, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 4, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 6, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": 3, "right": -1, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 4, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": -1, "right": 6, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": 4, "right": -1, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 6, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 3, "slot": 18, "left": 3, "right": -1, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 4, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": -1, "right": 6, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": -1, "right": 7, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": 6, "right": -1, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 7, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 8, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 6, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 7, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 8, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 7, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 8, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 3, "slot": 34, "left": 7, "right": -1, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": 8, "right": -1, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": -1, "right": 10, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": -1, "right": 11, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": 10, "right": -1, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": -1, "right": 11, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 13, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": 10, "right": -1, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": -1, "right": 11, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": -1, "right": 13, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": 11, "right": -1, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 13, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 3, "slot": 50, "left": 10, "right": -1, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": 11, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": -1, "right": 13, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": -1, "right": 14, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": 13, "right": -1, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 14, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 15, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": 13, "right": -1, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 14, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": -1, "right": 15, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": 14, "right": -1, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": -1, "right": 15, "ching": "ห้อง 16 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 8: กลอนฆ้องสลับมือต่อเนื่อง", "subtitle": "แบ่ง 2 ช่วง (เสียงสูง-กลาง 20 ห้อง / เสียงกลาง-ต่ำ 16 ห้อง) กันนิ้วล้า", "realPracticeNote": "ซ้อมบนฆ้องจริง: ตีต่อเนื่องทั้ง 36 ห้อง ระวังลูกพลิกเสียงในห้องที่ 3 ของแต่ละกลุ่ม", "parts": [{"name": "ช่วงที่ 1: เสียงสูง-กลาง (ห้อง 1–20)", "totalBars": 20, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": 11, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 13, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 14, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 13, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 11, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 13, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 14, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": 13, "right": -1, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 11, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 15, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 14, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 13, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 11, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 13, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 14, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": 10, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 11, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 13, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 11, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 10, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 11, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 13, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": 11, "right": -1, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": 10, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 14, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 13, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": 11, "right": -1, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 10, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 11, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 13, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 2, "slot": 33, "left": 8, "right": -1, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 10, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 11, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": 10, "right": -1, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 8, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 10, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": -1, "right": 11, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 1, "slot": 40, "left": 10, "right": -1, "ching": "ห้อง 11 • จังหวะ 1"}, {"bar": 11, "beat": 2, "slot": 41, "left": 8, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 13, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 11, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": 10, "right": -1, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 8, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 10, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 11, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 2, "slot": 49, "left": 7, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 8, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 10, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 8, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 7, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 8, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 10, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 1, "slot": 56, "left": 8, "right": -1, "ching": "ห้อง 15 • จังหวะ 1"}, {"bar": 15, "beat": 2, "slot": 57, "left": 7, "right": -1, "ching": "ห้อง 15 • ยก"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 11, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": -1, "right": 10, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": 8, "right": -1, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 7, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 8, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": -1, "right": 10, "ching": "ห้อง 16 • ตก (ฉับ)"}, {"bar": 17, "beat": 2, "slot": 65, "left": 6, "right": -1, "ching": "ห้อง 17 • ยก"}, {"bar": 17, "beat": 3, "slot": 66, "left": -1, "right": 7, "ching": "ห้อง 17 • จังหวะ 3"}, {"bar": 17, "beat": 4, "slot": 67, "left": -1, "right": 8, "ching": "ห้อง 17 • ตก (ฉิ่ง)"}, {"bar": 18, "beat": 1, "slot": 68, "left": 7, "right": -1, "ching": "ห้อง 18 • จังหวะ 1"}, {"bar": 18, "beat": 2, "slot": 69, "left": 6, "right": -1, "ching": "ห้อง 18 • ยก"}, {"bar": 18, "beat": 3, "slot": 70, "left": -1, "right": 7, "ching": "ห้อง 18 • จังหวะ 3"}, {"bar": 18, "beat": 4, "slot": 71, "left": -1, "right": 8, "ching": "ห้อง 18 • ตก (ฉับ)"}, {"bar": 19, "beat": 1, "slot": 72, "left": 7, "right": -1, "ching": "ห้อง 19 • จังหวะ 1"}, {"bar": 19, "beat": 2, "slot": 73, "left": 6, "right": -1, "ching": "ห้อง 19 • ยก"}, {"bar": 19, "beat": 3, "slot": 74, "left": -1, "right": 10, "ching": "ห้อง 19 • จังหวะ 3"}, {"bar": 19, "beat": 4, "slot": 75, "left": -1, "right": 8, "ching": "ห้อง 19 • ตก (ฉิ่ง)"}, {"bar": 20, "beat": 1, "slot": 76, "left": 7, "right": -1, "ching": "ห้อง 20 • จังหวะ 1"}, {"bar": 20, "beat": 2, "slot": 77, "left": 6, "right": -1, "ching": "ห้อง 20 • ยก"}, {"bar": 20, "beat": 3, "slot": 78, "left": -1, "right": 7, "ching": "ห้อง 20 • จังหวะ 3"}, {"bar": 20, "beat": 4, "slot": 79, "left": -1, "right": 8, "ching": "ห้อง 20 • ตก (ฉับ)"}]}, {"name": "ช่วงที่ 2: เสียงกลาง-ต่ำ (ห้อง 21–36)", "totalBars": 16, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": 4, "right": -1, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 6, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 7, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 6, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 4, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": -1, "right": 6, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": -1, "right": 7, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 1, "slot": 8, "left": 6, "right": -1, "ching": "ห้อง 3 • จังหวะ 1"}, {"bar": 3, "beat": 2, "slot": 9, "left": 4, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 8, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 7, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 6, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 4, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 6, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 7, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": 3, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 4, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 6, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 4, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 3, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 4, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 6, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": 4, "right": -1, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": 3, "right": -1, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": -1, "right": 7, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 6, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": 4, "right": -1, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": 3, "right": -1, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": -1, "right": 4, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": -1, "right": 6, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 2, "slot": 33, "left": 1, "right": -1, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 3, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 4, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": 3, "right": -1, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 1, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": -1, "right": 3, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": -1, "right": 4, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 1, "slot": 40, "left": 3, "right": -1, "ching": "ห้อง 11 • จังหวะ 1"}, {"bar": 11, "beat": 2, "slot": 41, "left": 1, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 6, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 4, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": 3, "right": -1, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 1, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 3, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 4, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 2, "slot": 49, "left": 0, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 1, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 3, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 1, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 0, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 1, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 3, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 1, "slot": 56, "left": 1, "right": -1, "ching": "ห้อง 15 • จังหวะ 1"}, {"bar": 15, "beat": 2, "slot": 57, "left": 0, "right": -1, "ching": "ห้อง 15 • ยก"}, {"bar": 15, "beat": 3, "slot": 58, "left": -1, "right": 4, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": -1, "right": 3, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": 1, "right": -1, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": 0, "right": -1, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 1, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": -1, "right": 3, "ching": "ห้อง 16 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 9: ทำนองลูกโยน 1", "subtitle": "ฝึกครบทั้ง 2 บรรทัด (เสียงสูง 8 ห้อง + เสียงต่ำ 8 ห้อง) • 1 รอบสมบูรณ์", "realPracticeNote": "ซ้อมบนฆ้องจริง: บรรเลงให้ได้สำเนียงลูกโยนและน้ำหนักเสียงสม่ำเสมอ", "parts": [{"name": "ครบ 1 รอบ (16 ห้อง)", "totalBars": 16, "steps": [{"bar": 1, "beat": 2, "slot": 1, "left": 10, "right": 14, "ching": "ห้อง 1 • ยก"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 12, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": -1, "right": 11, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 10, "right": 11, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 4, "slot": 7, "left": 7, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 2, "slot": 9, "left": 10, "right": -1, "ching": "ห้อง 3 • ยก"}, {"bar": 3, "beat": 3, "slot": 10, "left": -1, "right": 11, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 12, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": 11, "right": -1, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": 12, "right": -1, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 13, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": -1, "right": 14, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 2, "slot": 17, "left": 6, "right": -1, "ching": "ห้อง 5 • ยก"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 7, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": -1, "right": 8, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 7, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 8, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 9, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": -1, "right": 10, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 1, "slot": 24, "left": 9, "right": -1, "ching": "ห้อง 7 • จังหวะ 1"}, {"bar": 7, "beat": 2, "slot": 25, "left": -1, "right": 11, "ching": "ห้อง 7 • ยก"}, {"bar": 7, "beat": 3, "slot": 26, "left": 10, "right": -1, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": 9, "right": -1, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 10, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 9, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 8, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 7, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 2, "slot": 33, "left": 3, "right": 7, "ching": "ห้อง 9 • ยก"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 5, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": -1, "right": 4, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 3, "right": 4, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 4, "slot": 39, "left": 0, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 2, "slot": 41, "left": 3, "right": -1, "ching": "ห้อง 11 • ยก"}, {"bar": 11, "beat": 3, "slot": 42, "left": -1, "right": 4, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 5, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": 4, "right": -1, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": 5, "right": -1, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 6, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": -1, "right": 7, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 2, "slot": 49, "left": 6, "right": -1, "ching": "ห้อง 13 • ยก"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 7, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": -1, "right": 8, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 7, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 8, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 9, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": -1, "right": 10, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 1, "slot": 56, "left": 9, "right": -1, "ching": "ห้อง 15 • จังหวะ 1"}, {"bar": 15, "beat": 2, "slot": 57, "left": -1, "right": 11, "ching": "ห้อง 15 • ยก"}, {"bar": 15, "beat": 3, "slot": 58, "left": 10, "right": -1, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": 9, "right": -1, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 10, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": -1, "right": 9, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": 8, "right": -1, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 7, "right": -1, "ching": "ห้อง 16 • ตก (ฉับ)"}]}]}, {"title": "ด่านที่ 10: ทำนองลูกโยน 2", "subtitle": "ฝึกครบทั้ง 2 บรรทัด (เสียงสูง 8 ห้อง + เสียงต่ำ 8 ห้อง) • 1 รอบสมบูรณ์", "realPracticeNote": "ซ้อมบนฆ้องจริง: บรรเลงบูรณาการทักษะลูกโยนและจังหวะคู่ 8 ให้แม่นยำ", "parts": [{"name": "ครบ 1 รอบ (16 ห้อง)", "totalBars": 16, "steps": [{"bar": 1, "beat": 3, "slot": 2, "left": -1, "right": 14, "ching": "ห้อง 1 • จังหวะ 3"}, {"bar": 1, "beat": 4, "slot": 3, "left": -1, "right": 13, "ching": "ห้อง 1 • ตก (ฉิ่ง)"}, {"bar": 2, "beat": 1, "slot": 4, "left": 12, "right": -1, "ching": "ห้อง 2 • จังหวะ 1"}, {"bar": 2, "beat": 2, "slot": 5, "left": 11, "right": -1, "ching": "ห้อง 2 • ยก"}, {"bar": 2, "beat": 3, "slot": 6, "left": 10, "right": -1, "ching": "ห้อง 2 • จังหวะ 3"}, {"bar": 2, "beat": 4, "slot": 7, "left": 7, "right": -1, "ching": "ห้อง 2 • ตก (ฉับ)"}, {"bar": 3, "beat": 3, "slot": 10, "left": 7, "right": -1, "ching": "ห้อง 3 • จังหวะ 3"}, {"bar": 3, "beat": 4, "slot": 11, "left": -1, "right": 10, "ching": "ห้อง 3 • ตก (ฉิ่ง)"}, {"bar": 4, "beat": 1, "slot": 12, "left": -1, "right": 11, "ching": "ห้อง 4 • จังหวะ 1"}, {"bar": 4, "beat": 2, "slot": 13, "left": -1, "right": 12, "ching": "ห้อง 4 • ยก"}, {"bar": 4, "beat": 3, "slot": 14, "left": -1, "right": 13, "ching": "ห้อง 4 • จังหวะ 3"}, {"bar": 4, "beat": 4, "slot": 15, "left": 7, "right": 14, "ching": "ห้อง 4 • ตก (ฉับ)"}, {"bar": 5, "beat": 3, "slot": 18, "left": -1, "right": 8, "ching": "ห้อง 5 • จังหวะ 3"}, {"bar": 5, "beat": 4, "slot": 19, "left": 6, "right": -1, "ching": "ห้อง 5 • ตก (ฉิ่ง)"}, {"bar": 6, "beat": 1, "slot": 20, "left": 7, "right": -1, "ching": "ห้อง 6 • จังหวะ 1"}, {"bar": 6, "beat": 2, "slot": 21, "left": 8, "right": -1, "ching": "ห้อง 6 • ยก"}, {"bar": 6, "beat": 3, "slot": 22, "left": -1, "right": 9, "ching": "ห้อง 6 • จังหวะ 3"}, {"bar": 6, "beat": 4, "slot": 23, "left": 3, "right": 10, "ching": "ห้อง 6 • ตก (ฉับ)"}, {"bar": 7, "beat": 3, "slot": 26, "left": 9, "right": -1, "ching": "ห้อง 7 • จังหวะ 3"}, {"bar": 7, "beat": 4, "slot": 27, "left": -1, "right": 11, "ching": "ห้อง 7 • ตก (ฉิ่ง)"}, {"bar": 8, "beat": 1, "slot": 28, "left": -1, "right": 10, "ching": "ห้อง 8 • จังหวะ 1"}, {"bar": 8, "beat": 2, "slot": 29, "left": -1, "right": 9, "ching": "ห้อง 8 • ยก"}, {"bar": 8, "beat": 3, "slot": 30, "left": 8, "right": -1, "ching": "ห้อง 8 • จังหวะ 3"}, {"bar": 8, "beat": 4, "slot": 31, "left": 7, "right": -1, "ching": "ห้อง 8 • ตก (ฉับ)"}, {"bar": 9, "beat": 3, "slot": 34, "left": -1, "right": 7, "ching": "ห้อง 9 • จังหวะ 3"}, {"bar": 9, "beat": 4, "slot": 35, "left": -1, "right": 6, "ching": "ห้อง 9 • ตก (ฉิ่ง)"}, {"bar": 10, "beat": 1, "slot": 36, "left": 5, "right": -1, "ching": "ห้อง 10 • จังหวะ 1"}, {"bar": 10, "beat": 2, "slot": 37, "left": 4, "right": -1, "ching": "ห้อง 10 • ยก"}, {"bar": 10, "beat": 3, "slot": 38, "left": 3, "right": -1, "ching": "ห้อง 10 • จังหวะ 3"}, {"bar": 10, "beat": 4, "slot": 39, "left": 0, "right": -1, "ching": "ห้อง 10 • ตก (ฉับ)"}, {"bar": 11, "beat": 3, "slot": 42, "left": 0, "right": -1, "ching": "ห้อง 11 • จังหวะ 3"}, {"bar": 11, "beat": 4, "slot": 43, "left": -1, "right": 3, "ching": "ห้อง 11 • ตก (ฉิ่ง)"}, {"bar": 12, "beat": 1, "slot": 44, "left": -1, "right": 4, "ching": "ห้อง 12 • จังหวะ 1"}, {"bar": 12, "beat": 2, "slot": 45, "left": -1, "right": 5, "ching": "ห้อง 12 • ยก"}, {"bar": 12, "beat": 3, "slot": 46, "left": -1, "right": 6, "ching": "ห้อง 12 • จังหวะ 3"}, {"bar": 12, "beat": 4, "slot": 47, "left": 0, "right": 7, "ching": "ห้อง 12 • ตก (ฉับ)"}, {"bar": 13, "beat": 3, "slot": 50, "left": -1, "right": 8, "ching": "ห้อง 13 • จังหวะ 3"}, {"bar": 13, "beat": 4, "slot": 51, "left": 6, "right": -1, "ching": "ห้อง 13 • ตก (ฉิ่ง)"}, {"bar": 14, "beat": 1, "slot": 52, "left": 7, "right": -1, "ching": "ห้อง 14 • จังหวะ 1"}, {"bar": 14, "beat": 2, "slot": 53, "left": 8, "right": -1, "ching": "ห้อง 14 • ยก"}, {"bar": 14, "beat": 3, "slot": 54, "left": -1, "right": 9, "ching": "ห้อง 14 • จังหวะ 3"}, {"bar": 14, "beat": 4, "slot": 55, "left": 3, "right": 10, "ching": "ห้อง 14 • ตก (ฉับ)"}, {"bar": 15, "beat": 3, "slot": 58, "left": 7, "right": -1, "ching": "ห้อง 15 • จังหวะ 3"}, {"bar": 15, "beat": 4, "slot": 59, "left": -1, "right": 10, "ching": "ห้อง 15 • ตก (ฉิ่ง)"}, {"bar": 16, "beat": 1, "slot": 60, "left": -1, "right": 11, "ching": "ห้อง 16 • จังหวะ 1"}, {"bar": 16, "beat": 2, "slot": 61, "left": -1, "right": 12, "ching": "ห้อง 16 • ยก"}, {"bar": 16, "beat": 3, "slot": 62, "left": -1, "right": 13, "ching": "ห้อง 16 • จังหวะ 3"}, {"bar": 16, "beat": 4, "slot": 63, "left": 7, "right": 14, "ching": "ห้อง 16 • ตก (ฉับ)"}]}]}];
+
+    /* =========================================================================
+       5. ค่าจังหวะกลาง (Unified Master Clock) & ตัวแปรสถานะ
+       - SUB_BEAT_MS = 320ms ต่อ 1 ตัวโน้ต (4 ตัว = 1 ห้อง = 1,280ms)
+       - เมโทรนอมและรอบฟังสาธิตใช้จังหวะฐานเดียวกัน 100%
+    ========================================================================= */
+    const SUB_BEAT_MS = 320;
+    const BAR_MS = SUB_BEAT_MS * 4; // 1 ห้องเพลง = 4 จังหวะย่อย (ฉิ่งห้องคี่ / ฉับห้องคู่)
+
+    let studentsList = JSON.parse(JSON.stringify(DEFAULT_STUDENTS));
+    let exercisesList = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+    let currentStudent = null;
+    let currentMascot = 'boom';
+    let currentExerciseIndex = 0;
+    let currentPartIndex = 0;
+    let currentStepIndex = 0;
+    let hitCount = 0;
+    let totalAttempts = 0;
+    let hitSetInCurrentStep = new Set();
+    let isLandscapeFullscreen = false;
+    let audioCtx = null;
+    let editingStageIndex = 0;
+    let editingPartIndex = 0;
+    let editingStepsTemp = [];
+
+    // สถานะรอบฟังสาธิต (Master Grid Sequencer)
+    let isDemoPlaying = false;
+    let demoTickTimeout = null;
+
+    // สถานะเมโทรนอมฉิ่ง-ฉับ (ใช้เวลาฐานเดียวกับ Demo และไม่ตีซ้อนกัน)
+    let isMetronomeOn = false;
+    let metronomeTimer = null;
+    let metronomeIsChing = true;
+
+    function getCurrentPartObj() {
+      const ex = exercisesList[currentExerciseIndex];
+      return (ex && ex.parts && ex.parts[currentPartIndex]) ? ex.parts[currentPartIndex] : ex.parts[0];
+    }
+
+    function formatBeatLabel(bar, beat) {
+      if (beat === 4) {
+        return `ห้อง ${bar} • ตก (${bar % 2 === 1 ? 'ฉิ่ง' : 'ฉับ'})`;
+      }
+      if (beat === 2) {
+        return `ห้อง ${bar} • ยก`;
+      }
+      return `ห้อง ${bar} • จังหวะ ${beat}`;
+    }
+
+    /* =========================================================================
+       6. ระบบเสียงฆ้องวงใหญ่และฉิ่ง-ฉับไร้ดีเลย์ (Web Audio API Buffer + Synth Fallback)
+    ========================================================================= */
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      preloadWebAudioBuffers();
+    }
+
+    function playBuffer(buffer, volume = 0.95) {
+      if (!audioCtx || !buffer) return false;
+      try {
+        const src = audioCtx.createBufferSource();
+        const gain = audioCtx.createGain();
+        src.buffer = buffer;
+        gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+        src.connect(gain);
+        gain.connect(audioCtx.destination);
+        src.start(audioCtx.currentTime);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function playGongSound(gongId) {
+      const gongObj = GONG_NOTES[gongId];
+      if (!gongObj) return;
+      initAudio();
+
+      // 1) เล่นจาก Web Audio Buffer (แม่นยำ 0ms, ซ้อนเสียงได้ไม่กระตุก)
+      if (gongAudioBuffers[gongId] && playBuffer(gongAudioBuffers[gongId], 0.95)) {
+        return;
+      }
+      // 2) Fallback กรณีเปิดผ่าน file:// บนเครื่องโดยตรงและมีโฟลเดอร์ sounds/
+      if (loadedRealGongs[gongId]) {
+        try {
+          const clone = loadedRealGongs[gongId].cloneNode();
+          clone.volume = 0.95;
+          clone.play();
+          return;
+        } catch (e) {}
+      }
+      // 3) Fallback เสียงสังเคราะห์ไร้ดีเลย์
+      playSynthGong(gongObj.freq);
+    }
+
+    function playSynthGong(freq) {
+      try {
+        initAudio();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const oscMain = audioCtx.createOscillator();
+        const oscOvertone = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscMain.type = 'triangle';
+        oscMain.frequency.setValueAtTime(freq, now);
+        oscOvertone.type = 'sine';
+        oscOvertone.frequency.setValueAtTime(freq * 2.0, now);
+
+        gainNode.gain.setValueAtTime(0.48, now);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, now + 1.15);
+
+        oscMain.connect(gainNode);
+        oscOvertone.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscMain.start(now);
+        oscOvertone.start(now);
+        oscMain.stop(now + 1.15);
+        oscOvertone.stop(now + 1.15);
+      } catch (e) {}
+    }
+
+    function playChingSound(type) {
+      initAudio();
+      // 1) เล่นจาก Web Audio Buffer (ฉิ่ง/ฉับจริง ตรงจังหวะ 0ms)
+      if (type === 'ฉับ' && chingAudioBuffers.chap && playBuffer(chingAudioBuffers.chap, 0.78)) {
+        return;
+      }
+      if (type === 'ฉิ่ง' && chingAudioBuffers.ching && playBuffer(chingAudioBuffers.ching, 0.78)) {
+        return;
+      }
+      // 2) Fallback HTMLAudio (กรณีเปิดผ่าน file://)
+      if (type === 'ฉับ' && loadedRealChing.chap) {
+        try {
+          const c = loadedRealChing.chap.cloneNode();
+          c.volume = 0.75;
+          c.play();
+          return;
+        } catch (e) {}
+      } else if (type === 'ฉิ่ง' && loadedRealChing.ching) {
+        try {
+          const c = loadedRealChing.ching.cloneNode();
+          c.volume = 0.75;
+          c.play();
+          return;
+        } catch (e) {}
+      }
+      // 3) เสียงสังเคราะห์ ฉิ่ง / ฉับ
+      try {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc1.type = 'sine';
+        osc2.type = 'triangle';
+
+        if (type === 'ฉับ') {
+          osc1.frequency.setValueAtTime(3100, now);
+          osc2.frequency.setValueAtTime(4650, now);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.11);
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 0.11);
+          osc2.stop(now + 0.11);
+        } else {
+          osc1.frequency.setValueAtTime(3600, now);
+          osc2.frequency.setValueAtTime(5400, now);
+          gain.gain.setValueAtTime(0.16, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 0.55);
+          osc2.stop(now + 0.55);
+        }
+      } catch (e) {}
+    }
+
+    // ควบคุมเมโทรนอมฉิ่ง-ฉับ (ไม่ตีแยกกับรอบฟังสาธิต)
+    function clearStandaloneMetronomeTimer() {
+      if (metronomeTimer) {
+        clearInterval(metronomeTimer);
+        metronomeTimer = null;
+      }
+    }
+
+    function startStandaloneMetronomeInterval(immediateFirstHit = true) {
+      clearStandaloneMetronomeTimer();
+      if (immediateFirstHit) {
+        metronomeIsChing = true;
+        updateMetronomeButtonsUI('ฉิ่ง!');
+        playChingSound('ฉิ่ง');
+      }
+      metronomeTimer = setInterval(() => {
+        metronomeIsChing = !metronomeIsChing;
+        const beatLabel = metronomeIsChing ? 'ฉิ่ง' : 'ฉับ';
+        playChingSound(beatLabel);
+        updateMetronomeButtonsUI(beatLabel + '!');
+      }, BAR_MS);
+    }
+
+    function toggleMetronomeLoop() {
+      if (isMetronomeOn) {
+        stopMetronomeLoop();
+      } else {
+        initAudio();
+        isMetronomeOn = true;
+        if (isDemoPlaying) {
+          // ถ้ารอบฟังสาธิตกำลังเล่นอยู่ ให้ใช้จังหวะกลางของรอบฟังสาธิตยิงฉิ่ง-ฉับตรงห้องคี่/คู่ทันที ไม่ตั้ง timer ซ้อน
+          clearStandaloneMetronomeTimer();
+          updateMetronomeButtonsUI('ซิงก์สาธิต');
+        } else {
+          startStandaloneMetronomeInterval(true);
+        }
+      }
+    }
+
+    function stopMetronomeLoop() {
+      isMetronomeOn = false;
+      clearStandaloneMetronomeTimer();
+      updateMetronomeButtonsUI(null);
+    }
+
+    function updateMetronomeButtonsUI(activeBeatText) {
+      const btnMain = document.getElementById('btn-metronome-main');
+      const btnLand = document.getElementById('btn-metronome-land');
+      const rhythmBadge = document.getElementById('rhythm-indicator');
+
+      if (isMetronomeOn) {
+        const label = `🔔 ฉิ่ง-ฉับ: เปิด (${activeBeatText || 'ฉิ่ง!'})`;
+        if (btnMain) {
+          btnMain.textContent = label;
+          btnMain.classList.add('metronome-on');
+        }
+        if (btnLand) {
+          btnLand.textContent = label;
+          btnLand.classList.add('metronome-on');
+        }
+        if (rhythmBadge) {
+          rhythmBadge.textContent = `เมโทรนอม • ${activeBeatText || 'ฉิ่ง!'}`;
+        }
+      } else {
+        if (btnMain) {
+          btnMain.textContent = '🔔 ฉิ่ง-ฉับ: ปิด';
+          btnMain.classList.remove('metronome-on');
+        }
+        if (btnLand) {
+          btnLand.textContent = '🔔 ฉิ่ง-ฉับ: ปิด';
+          btnLand.classList.remove('metronome-on');
+        }
+        if (rhythmBadge) {
+          rhythmBadge.textContent = 'เมโทรนอม • ปิด';
+        }
+      }
+    }
+
+    function updateDemoButtonUI() {
+      const btn = document.getElementById('btn-demo-play');
+      if (!btn) return;
+      if (isDemoPlaying) {
+        btn.textContent = '⏹️ หยุดสาธิต';
+        btn.classList.add('playing');
+      } else {
+        btn.textContent = '▶️ ฟังสาธิต';
+        btn.classList.remove('playing');
+      }
+    }
+
+    function stopDemoSequence(resumeMetronomeIfOn = false) {
+      const wasPlaying = isDemoPlaying;
+      isDemoPlaying = false;
+      if (demoTickTimeout) {
+        clearTimeout(demoTickTimeout);
+        demoTickTimeout = null;
+      }
+      updateDemoButtonUI();
+      if (wasPlaying && resumeMetronomeIfOn && isMetronomeOn) {
+        // กลับมาตีเมโทรนอมอิสระต่อเนียนๆ หลังจบหรือหยุดรอบสาธิต
+        metronomeIsChing = false; // รอบถัดไปจะสลับเป็น "ฉิ่ง" พอดี
+        startStandaloneMetronomeInterval(false);
+      }
+    }
+
+    /* =========================================================================
+       7. โหลดข้อมูลและจัดการหน้าล็อกอิน (Screen 1) -> หน้าเลือกด่าน (Screen 2)
+    ========================================================================= */
+    function loadSavedData() {
+      try {
+        const savedStu = localStorage.getItem('khong_students_v4');
+        if (savedStu) {
+          const parsed = JSON.parse(savedStu);
+          if (Array.isArray(parsed) && parsed.length === 7) studentsList = parsed;
+        }
+        const savedEx = localStorage.getItem('khong_exercises_v7');
+        if (savedEx) {
+          const parsedEx = JSON.parse(savedEx);
+          if (Array.isArray(parsedEx) && parsedEx.length === 10 && parsedEx[0].parts && typeof parsedEx[0].parts[0].totalBars === 'number') {
+            exercisesList = parsedEx;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMascotPreviews() {
+      MASCOT_KEYS.forEach(key => {
+        const box = document.getElementById('preview-' + key);
+        if (box) box.innerHTML = getChibiSVG(key, 'normal');
+      });
+    }
+
+    function randomizeMascot() {
+      const idx = Math.floor(Math.random() * MASCOT_KEYS.length);
+      currentMascot = MASCOT_KEYS[idx];
+    }
+
+    function handleLoginStart() {
+      const inp = document.getElementById('student-id-input');
+      const code = inp ? inp.value.trim() : '';
+      if (!code) {
+        alert('กรุณากรอกรหัสนักศึกษาของตนเองก่อนเข้าสู่ระบบครับ');
+        return;
+      }
+      const found = studentsList.find(s => s.code.toLowerCase() === code.toLowerCase());
+      if (!found) {
+        alert('ไม่พบรหัสนักศึกษานี้ในฐานข้อมูลสาขาวิชา กรุณาตรวจสอบรหัสอีกครั้งครับ');
+        return;
+      }
+      currentStudent = found;
+      initAudio();
+      showStagesScreen();
+    }
+
+    function logoutToLogin() {
+      stopDemoSequence(false);
+      stopMetronomeLoop();
+      currentStudent = null;
+      const inp = document.getElementById('student-id-input');
+      if (inp) inp.value = '';
+      document.getElementById('screen-stages').classList.add('hidden');
+      document.getElementById('screen-practice').classList.add('hidden');
+      document.getElementById('screen-login').classList.remove('hidden');
+    }
+
+    function getStudentProgressMap(stuCode) {
+      const logs = JSON.parse(localStorage.getItem('khong_srl_logs_v4') || '[]');
+      const map = {};
+      logs.filter(l => l.studentCode === stuCode).forEach(l => {
+        if (!map[l.stageIndex]) {
+          map[l.stageIndex] = { rounds: 0, bestAcc: 0, passed: false, passedParts: new Set() };
+        }
+        map[l.stageIndex].rounds++;
+        if (l.accuracyNum > map[l.stageIndex].bestAcc) {
+          map[l.stageIndex].bestAcc = l.accuracyNum;
+        }
+        if (l.accuracyNum >= 80) {
+          map[l.stageIndex].passed = true;
+          if (typeof l.partIndex === 'number') {
+            map[l.stageIndex].passedParts.add(l.partIndex);
+          }
+        }
+      });
+      return map;
+    }
+
+    function showStagesScreen() {
+      stopDemoSequence(false);
+      stopMetronomeLoop();
+      if (isLandscapeFullscreen) toggleLandscapeFullscreen();
+      document.getElementById('screen-login').classList.add('hidden');
+      document.getElementById('screen-practice').classList.add('hidden');
+      document.getElementById('screen-stages').classList.remove('hidden');
+
+      const nameEl = document.getElementById('banner-student-name');
+      if (nameEl && currentStudent) {
+        nameEl.textContent = `${currentStudent.name} (รหัส ${currentStudent.code})`;
+      }
+
+      const progMap = getStudentProgressMap(currentStudent.code);
+      let passedCount = 0;
+      let totalRounds = 0;
+      Object.values(progMap).forEach(p => {
+        if (p.passed) passedCount++;
+        totalRounds += p.rounds;
+      });
+
+      const progEl = document.getElementById('banner-student-progress');
+      if (progEl) {
+        progEl.textContent = `ผ่านเกณฑ์แล้ว ${passedCount}/10 ด่าน • ฝึกซ้อมสะสม ${totalRounds} รอบ`;
+      }
+
+      const container = document.getElementById('stages-list-container');
+      if (!container) return;
+
+      container.innerHTML = exercisesList.map((ex, idx) => {
+        const st = progMap[idx] || { rounds: 0, bestAcc: 0, passed: false, passedParts: new Set() };
+        const partInfo = ex.parts.length > 1
+          ? `${ex.parts.length} ช่วง (ช่วงละ ${ex.parts[0].steps.length}–${ex.parts[1].steps.length} โน้ต)`
+          : `1 รอบ (${ex.parts[0].steps.length} จังหวะโน้ต)`;
+
+        const statusBadge = st.passed
+          ? `<span style="color:#059669; font-weight:700;">✅ ผ่านเกณฑ์แล้ว (แม่นยำสูงสุด ${st.bestAcc}%)</span>`
+          : st.rounds > 0
+          ? `<span style="color:#D97706; font-weight:600;">⏳ ซ้อมแล้ว ${st.rounds} รอบ (สูงสุด ${st.bestAcc}%)</span>`
+          : `<span style="color:#78350F;">${partInfo}</span>`;
+
+        return `
+          <div class="stage-card ${st.passed ? 'passed' : ''}" onclick="enterStagePractice(${idx})">
+            <div class="stage-num">${idx + 1}</div>
+            <div class="stage-info">
+              <div class="stage-title">${ex.title}</div>
+              <div class="stage-sub">${ex.subtitle || ''}</div>
+              <div class="stage-meta">${statusBadge}</div>
+            </div>
+            <button type="button" class="stage-play-btn">เข้าซ้อม ▶</button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function enterStagePractice(stageIdx) {
+      stopDemoSequence(false);
+      currentExerciseIndex = stageIdx;
+      currentPartIndex = 0;
+      randomizeMascot();
+      document.getElementById('screen-stages').classList.add('hidden');
+      document.getElementById('screen-practice').classList.remove('hidden');
+
+      const ex = exercisesList[stageIdx];
+      const titleEl = document.getElementById('practice-stage-title');
+      if (titleEl) titleEl.textContent = ex.title;
+
+      renderPartSwitcher();
+      renderHorseshoeGongs();
+      resetCurrentExercise();
+    }
+
+    function renderPartSwitcher() {
+      const bar = document.getElementById('part-switcher-bar');
+      if (!bar) return;
+      const ex = exercisesList[currentExerciseIndex];
+      if (!ex.parts || ex.parts.length <= 1) {
+        bar.classList.add('hidden');
+        bar.innerHTML = '';
+        return;
+      }
+      bar.classList.remove('hidden');
+      bar.innerHTML = ex.parts.map((p, idx) => `
+        <button type="button" class="part-pill ${idx === currentPartIndex ? 'active' : ''}" onclick="switchExercisePart(${idx})">
+          ${p.name}
+        </button>
+      `).join('');
+    }
+
+    function switchExercisePart(partIdx) {
+      stopDemoSequence(true);
+      currentPartIndex = partIdx;
+      renderPartSwitcher();
+      resetCurrentExercise();
+    }
+
+    function backToStagesMap() {
+      showStagesScreen();
+    }
+
+    function exitLandscapeOrBack() {
+      if (isLandscapeFullscreen) {
+        toggleLandscapeFullscreen();
+      } else {
+        showStagesScreen();
+      }
+    }
+
+    /* =========================================================================
+       8. วาดผังวงฆ้องวงใหญ่ท็อปวิว 16 ลูก (รฺ - มํ) ไม่ซ้อนทับกัน
+    ========================================================================= */
+    function renderHorseshoeGongs() {
+      const layer = document.getElementById('gongs-layer');
+      if (!layer) return;
+      layer.innerHTML = '';
+
+      const startAngleDeg = 130;
+      const endAngleDeg = 410;
+      const total = GONG_NOTES.length;
+
+      GONG_NOTES.forEach((gong, idx) => {
+        const angleDeg = startAngleDeg + (idx / (total - 1)) * (endAngleDeg - startAngleDeg);
+        const rad = (angleDeg * Math.PI) / 180;
+
+        const cx = 50 + 41.5 * Math.cos(rad);
+        const cy = 53 + 42.5 * Math.sin(rad);
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'gong-btn';
+        btn.id = 'gong-btn-' + gong.id;
+        btn.style.left = cx + '%';
+        btn.style.top = cy + '%';
+        btn.innerHTML = `<div class="gong-boss">${gong.label}</div>`;
+
+        btn.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          handleGongHit(gong.id, btn);
+        });
+
+        layer.appendChild(btn);
+      });
+    }
+
+    function getStepExpectedGongs(step) {
+      const arr = [];
+      if (typeof step.left === 'number' && step.left >= 0) arr.push(step.left);
+      if (typeof step.right === 'number' && step.right >= 0 && !arr.includes(step.right)) arr.push(step.right);
+      return arr;
+    }
+
+    function getStepHandMode(step) {
+      const hasL = typeof step.left === 'number' && step.left >= 0;
+      const hasR = typeof step.right === 'number' && step.right >= 0;
+      if (hasL && hasR) return 'BOTH';
+      if (hasL) return 'L';
+      return 'R';
+    }
+
+    function getHandThaiText(handMode) {
+      if (handMode === 'L') return 'มือซ้าย';
+      if (handMode === 'R') return 'มือขวา';
+      return 'สองมือพร้อมกัน';
+    }
+
+    function clearGongCues() {
+      GONG_NOTES.forEach(g => {
+        const b = document.getElementById('gong-btn-' + g.id);
+        if (b) {
+          b.classList.remove('cue-left', 'cue-right');
+          const oldTag = b.querySelector('.gong-hand-tag');
+          if (oldTag) oldTag.remove();
+        }
+      });
+    }
+
+    function updatePracticeUI(mood = 'normal', customSpeech = null) {
+      const part = getCurrentPartObj();
+      const step = part.steps[currentStepIndex];
+      const mascot = MASCOT_DATA[currentMascot];
+
+      const avatarBox = document.getElementById('active-chibi-avatar');
+      if (avatarBox) avatarBox.innerHTML = getChibiSVG(currentMascot, mood);
+
+      const nameBadge = document.getElementById('active-mascot-name');
+      if (nameBadge) nameBadge.textContent = mascot.name;
+
+      clearGongCues();
+      if (!step) return;
+
+      const expectedGongs = getStepExpectedGongs(step);
+      const handMode = getStepHandMode(step);
+      const noteNames = expectedGongs.map(id => GONG_NOTES[id].label).join(' + ');
+
+      if (typeof step.left === 'number' && step.left >= 0) {
+        const bL = document.getElementById('gong-btn-' + step.left);
+        if (bL) {
+          bL.classList.add('cue-left');
+          bL.insertAdjacentHTML('beforeend', `<span class="gong-hand-tag" style="background:#2563EB;">ซ้าย</span>`);
+        }
+      }
+      if (typeof step.right === 'number' && step.right >= 0) {
+        const bR = document.getElementById('gong-btn-' + step.right);
+        if (bR) {
+          bR.classList.add('cue-right');
+          bR.insertAdjacentHTML('beforeend', `<span class="gong-hand-tag" style="background:#EA580C;">ขวา</span>`);
+        }
+      }
+
+      const centerRhythm = document.getElementById('center-rhythm-label');
+      if (centerRhythm) centerRhythm.textContent = step.ching || formatBeatLabel(step.bar || 1, step.beat || 1);
+
+      const centerNote = document.getElementById('center-note-display');
+      if (centerNote) centerNote.textContent = noteNames;
+
+      const centerHand = document.getElementById('center-hand-display');
+      if (centerHand) {
+        centerHand.textContent = getHandThaiText(handMode);
+        centerHand.style.background = handMode === 'L' ? '#2563EB' : handMode === 'R' ? '#EA580C' : '#7C3AED';
+      }
+
+      const acc = totalAttempts === 0 ? 100 : Math.round((hitCount / totalAttempts) * 100);
+      const centerProg = document.getElementById('center-progress-display');
+      if (centerProg) {
+        centerProg.textContent = `โน้ตที่ ${currentStepIndex + 1}/${part.steps.length} • แม่นยำ ${acc}%`;
+      }
+
+      const speechEl = document.getElementById('mascot-speech-text');
+      if (speechEl) {
+        speechEl.textContent = customSpeech || mascot.guide(noteNames, getHandThaiText(handMode));
+      }
+    }
+
+    // อัปเดตหน้าจอกลางวงฆ้องตอนจังหวะเว้น ("-") ระหว่างรอบฟังสาธิต
+    function updateDemoRestUI(bar, beat, totalBars) {
+      clearGongCues();
+      const centerRhythm = document.getElementById('center-rhythm-label');
+      if (centerRhythm) centerRhythm.textContent = formatBeatLabel(bar, beat);
+
+      const centerNote = document.getElementById('center-note-display');
+      if (centerNote) centerNote.textContent = '—';
+
+      const centerHand = document.getElementById('center-hand-display');
+      if (centerHand) {
+        centerHand.textContent = 'เว้นจังหวะ (-)';
+        centerHand.style.background = '#9CA3AF';
+      }
+
+      const centerProg = document.getElementById('center-progress-display');
+      if (centerProg) {
+        centerProg.textContent = `สาธิต • ห้อง ${bar}/${totalBars}`;
+      }
+    }
+
+    function handleGongHit(gongId, btnEl) {
+      // ถ้ากดตีฆ้องเองระหว่างรอบสาธิต ให้หยุดรอบสาธิตแล้วเล่นเสียงลูกที่กดทันที
+      if (isDemoPlaying) {
+        stopDemoSequence(true);
+      }
+      playGongSound(gongId);
+
+      if (btnEl) {
+        btnEl.classList.add('pressed');
+        setTimeout(() => btnEl.classList.remove('pressed'), 120);
+      }
+
+      const ex = exercisesList[currentExerciseIndex];
+      const part = getCurrentPartObj();
+      const step = part.steps[currentStepIndex];
+      if (!step) return;
+
+      const expectedGongs = getStepExpectedGongs(step);
+      const handMode = getStepHandMode(step);
+      const mascot = MASCOT_DATA[currentMascot];
+      totalAttempts++;
+
+      if (expectedGongs.includes(gongId)) {
+        hitCount++;
+        hitSetInCurrentStep.add(gongId);
+
+        if (hitSetInCurrentStep.size >= expectedGongs.length) {
+          hitSetInCurrentStep.clear();
+          currentStepIndex++;
+
+          if (currentStepIndex >= part.steps.length) {
+            const acc = Math.round((hitCount / totalAttempts) * 100);
+            const logLabel = ex.parts.length > 1 ? `${ex.title} [${part.name}]` : ex.title;
+            recordPracticeLog(currentExerciseIndex, currentPartIndex, logLabel, acc);
+            currentStepIndex = 0;
+            hitCount = 0;
+            totalAttempts = 0;
+
+            let finishText = mascot.finish;
+            if (ex.parts.length > 1 && currentPartIndex === 0) {
+              finishText += ` ลองสลับไปซ้อม "${ex.parts[1].name}" ต่อได้เลยนะ!`;
+            }
+            updatePracticeUI('happy', finishText);
+          } else {
+            if (Math.random() < 0.25) randomizeMascot();
+            const activeM = MASCOT_DATA[currentMascot];
+            const praise = activeM.correct[Math.floor(Math.random() * activeM.correct.length)];
+            updatePracticeUI('happy', praise);
+          }
+        }
+      } else {
+        const expectedNotes = expectedGongs.map(id => GONG_NOTES[id].label).join(' คู่กับ ');
+        const wrongMsg = mascot.wrong(expectedNotes, getHandThaiText(handMode));
+        updatePracticeUI('wrong', wrongMsg);
+      }
+    }
+
+    function resetCurrentExercise() {
+      stopDemoSequence(true);
+      currentStepIndex = 0;
+      hitCount = 0;
+      totalAttempts = 0;
+      hitSetInCurrentStep.clear();
+      updatePracticeUI('normal');
+    }
+
+    /* =========================================================================
+       รอบฟังสาธิตแบบตารางโน้ตไทยแท้ (Exact 4-Slot/Bar Master Clock + Sync ฉิ่ง-ฉับ)
+       - เว้นวรรค "-" เงียบตามจำนวนจังหวะจริง 100%
+       - จังหวะยก = ตัวที่ 2 | จังหวะตก = ตัวที่ 4
+       - ถ้าเปิดเมโทรนอมฉิ่ง-ฉับ จะยิง "ฉิ่ง" ที่ห้องคี่ตัวที่ 4 และ "ฉับ" ที่ห้องคู่ตัวที่ 4
+         ตรงกับตัวโน้ตเป๊ะแบบ 0ms ไม่มีดีเลย์หรือคลาดเคลื่อน
+    ========================================================================= */
+    function toggleDemoSequence() {
+      if (isDemoPlaying) {
+        stopDemoSequence(true);
+        currentStepIndex = 0;
+        updatePracticeUI('normal');
+        return;
+      }
+      playDemoSequence();
+    }
+
+    function playDemoSequence() {
+      initAudio();
+      const part = getCurrentPartObj();
+      if (!part || !part.steps || part.steps.length === 0) return;
+
+      // หยุด timer เดิมทั้งหมด (รวมถึงเมโทรนอมอิสระ เพื่อโอนมาใช้ Master Clock เดียวกัน)
+      stopDemoSequence(false);
+      clearStandaloneMetronomeTimer();
+
+      currentStepIndex = 0;
+      hitCount = 0;
+      totalAttempts = 0;
+      hitSetInCurrentStep.clear();
+
+      // สร้างแผนที่ slot -> index ของ step เพื่อเดินเวลาครบทุกช่องจังหวะรวมเครื่องหมาย "-"
+      const slotMap = new Map();
+      let maxSlot = 0;
+      part.steps.forEach((st, idx) => {
+        const slot = (typeof st.slot === 'number')
+          ? st.slot
+          : ((st.bar ? (st.bar - 1) * 4 + ((st.beat || 1) - 1) : idx));
+        slotMap.set(slot, idx);
+        if (slot > maxSlot) maxSlot = slot;
+      });
+
+      const totalBars = Math.max(part.totalBars || 1, Math.floor(maxSlot / 4) + 1);
+      const totalSlots = totalBars * 4;
+
+      isDemoPlaying = true;
+      updateDemoButtonUI();
+
+      let currentSlot = 0;
+      const startTime = performance.now();
+
+      function runSlotTick() {
+        if (!isDemoPlaying) return;
+
+        if (currentSlot >= totalSlots) {
+          // จบรอบสาธิตครบทุกห้องแล้ว
+          stopDemoSequence(true);
+          currentStepIndex = 0;
+          updatePracticeUI('normal', 'ฟังสาธิตจบแล้ว ลองกดฝึกตีเองตามไฟนำสายตาได้เลย!');
+          return;
+        }
+
+        const bar = Math.floor(currentSlot / 4) + 1;
+        const beat = (currentSlot % 4) + 1; // 1, 2 (ยก), 3, 4 (ตก)
+
+        // 1) ถ้านักศึกษาเปิดเมโทรนอมฉิ่ง-ฉับไว้ -> ตีฉิ่งห้องคี่ (1,3,5,7...) / ฉับห้องคู่ (2,4,6,8...) ที่จังหวะตก (ตัวที่ 4)
+        if (beat === 4 && isMetronomeOn) {
+          const chingType = (bar % 2 === 1) ? 'ฉิ่ง' : 'ฉับ';
+          playChingSound(chingType);
+          updateMetronomeButtonsUI(chingType + '!');
+        }
+
+        // 2) ตรวจว่าช่องจังหวะนี้มีโน้ตฆ้อง หรือเป็น "-" (เว้นจังหวะ)
+        if (slotMap.has(currentSlot)) {
+          const stepIdx = slotMap.get(currentSlot);
+          currentStepIndex = stepIdx;
+          const st = part.steps[stepIdx];
+
+          updatePracticeUI('happy', `กำลังสาธิต • ห้องที่ ${bar}/${totalBars} (สังเกตจังหวะเว้นและมือซ้าย-ขวา)`);
+          const gongs = getStepExpectedGongs(st);
+          gongs.forEach(gId => {
+            playGongSound(gId);
+            const b = document.getElementById('gong-btn-' + gId);
+            if (b) {
+              b.classList.add('pressed');
+              setTimeout(() => b.classList.remove('pressed'), Math.min(180, SUB_BEAT_MS - 60));
+            }
+          });
+        } else {
+          // เครื่องหมาย "-" : ไม่ตีฆ้อง เงียบตรงตามจังหวะจริงของโน้ตไทย
+          updateDemoRestUI(bar, beat, totalBars);
+        }
+
+        currentSlot++;
+        // Drift-corrected scheduling: คำนวณเวลาเป้าหมายของช่องถัดไปจากเวลาเริ่มต้น ป้องกันจังหวะไหล
+        const nextExpectedTime = startTime + (currentSlot * SUB_BEAT_MS);
+        const delay = Math.max(0, nextExpectedTime - performance.now());
+        demoTickTimeout = setTimeout(runSlotTick, delay);
+      }
+
+      runSlotTick();
+    }
+
+    function toggleLandscapeFullscreen() {
+      isLandscapeFullscreen = !isLandscapeFullscreen;
+      const btn = document.getElementById('btn-toggle-landscape');
+      if (isLandscapeFullscreen) {
+        document.body.classList.add('landscape-fullscreen');
+        if (btn) {
+          btn.textContent = '🔙 แนวตั้งปกติ';
+          btn.classList.add('active-mode');
+        }
+      } else {
+        document.body.classList.remove('landscape-fullscreen');
+        if (btn) {
+          btn.textContent = '🔄 ขยายแนวนอน';
+          btn.classList.remove('active-mode');
+        }
+      }
+    }
+
+    /* =========================================================================
+       9. ระบบโหมดครูผู้สอน (ล็อกรหัสผ่าน SHA-256 + แก้ไขแบบฝึกหัด / รหัสนักศึกษา / สถิติ)
+    ========================================================================= */
+    const TEACHER_PWD_HASH = '81da9bb9ec78bb9e6229c60f389dec167ccb40c7fa4960ee1505ba025857231a';
+    const TEACHER_SESSION_KEY = 'khong_teacher_unlocked_v1';
+
+    function sha256Fallback(ascii) {
+      function rightRotate(value, amount) {
+        return (value >>> amount) | (value << (32 - amount));
+      }
+      const mathPow = Math.pow;
+      const maxWord = mathPow(2, 32);
+      let result = '';
+      const words = [];
+      const asciiBitLength = ascii.length * 8;
+      const hash = [];
+      const k = [];
+      let primeCounter = 0;
+      const isComposite = {};
+      for (let candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+          for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+          hash[primeCounter] = (mathPow(candidate, 0.5) * maxWord) | 0;
+          k[primeCounter++] = (mathPow(candidate, 1 / 3) * maxWord) | 0;
+        }
+      }
+      ascii += '\x80';
+      while ((ascii.length % 64) - 56) ascii += '\x00';
+      for (let i = 0; i < ascii.length; i++) {
+        const j = ascii.charCodeAt(i);
+        words[i >> 2] |= j << (((3 - i) % 4) * 8);
+      }
+      words[words.length] = (asciiBitLength / maxWord) | 0;
+      words[words.length] = asciiBitLength;
+      for (let j = 0; j < words.length;) {
+        const w = words.slice(j, (j += 16));
+        const oldHash = hash.slice(0);
+        for (let i = 0; i < 64; i++) {
+          const w15 = w[i - 15], w2 = w[i - 2];
+          const a = hash[0], e = hash[4];
+          const temp1 =
+            hash[7] +
+            (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) +
+            ((e & hash[5]) ^ (~e & hash[6])) +
+            k[i] +
+            (w[i] =
+              i < 16
+                ? w[i]
+                : (w[i - 16] +
+                    (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) +
+                    w[i - 7] +
+                    (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) |
+                  0);
+          const temp2 =
+            (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) +
+            ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash.unshift((temp1 + temp2) | 0);
+          hash[4] = (hash[4] + temp1) | 0;
+          hash.pop();
+        }
+        for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+      }
+      for (let i = 0; i < 8; i++) {
+        for (let j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += (b < 16 ? 0 : '') + b.toString(16);
+        }
+      }
+      return result;
+    }
+
+    async function computeSha256Hex(text) {
+      if (window.crypto && window.crypto.subtle) {
+        try {
+          const msgUint8 = new TextEncoder().encode(text);
+          const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgUint8);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (e) {}
+      }
+      const utf8Bytes = unescape(encodeURIComponent(text));
+      return sha256Fallback(utf8Bytes);
+    }
+
+    function updateTeacherTopbarBadge() {
+      const btn = document.getElementById('btn-topbar-teacher');
+      if (!btn) return;
+      const unlocked = sessionStorage.getItem(TEACHER_SESSION_KEY) === 'true';
+      btn.textContent = unlocked ? '🔓 โหมดครูผู้สอน' : '🔒 โหมดครูผู้สอน';
+    }
+
+    function openTeacherModal() {
+      stopDemoSequence(false);
+      if (sessionStorage.getItem(TEACHER_SESSION_KEY) !== 'true') {
+        const authModal = document.getElementById('teacher-auth-modal');
+        const pwdInp = document.getElementById('teacher-pwd-input');
+        const errEl = document.getElementById('teacher-auth-error');
+        if (errEl) errEl.textContent = '';
+        if (pwdInp) {
+          pwdInp.value = '';
+          pwdInp.type = 'password';
+        }
+        const eyeBtn = document.getElementById('btn-toggle-pwd');
+        if (eyeBtn) eyeBtn.textContent = '👁️';
+        if (authModal) authModal.classList.add('show');
+        setTimeout(() => { if (pwdInp) pwdInp.focus(); }, 60);
+        return;
+      }
+      showTeacherDashboard();
+    }
+
+    function closeTeacherAuthModal() {
+      const authModal = document.getElementById('teacher-auth-modal');
+      if (authModal) authModal.classList.remove('show');
+    }
+
+    function toggleTeacherPwdVisibility() {
+      const pwdInp = document.getElementById('teacher-pwd-input');
+      const eyeBtn = document.getElementById('btn-toggle-pwd');
+      if (!pwdInp) return;
+      if (pwdInp.type === 'password') {
+        pwdInp.type = 'text';
+        if (eyeBtn) eyeBtn.textContent = '🙈';
+      } else {
+        pwdInp.type = 'password';
+        if (eyeBtn) eyeBtn.textContent = '👁️';
+      }
+    }
+
+    async function verifyTeacherPassword() {
+      const pwdInp = document.getElementById('teacher-pwd-input');
+      const errEl = document.getElementById('teacher-auth-error');
+      const cardEl = document.getElementById('teacher-auth-card');
+      const rawVal = pwdInp ? pwdInp.value : '';
+
+      if (!rawVal) {
+        if (errEl) errEl.textContent = 'กรุณากรอกรหัสผ่านก่อนกดปลดล็อก';
+        if (pwdInp) pwdInp.focus();
+        return;
+      }
+
+      const hashExact = await computeSha256Hex(rawVal);
+      const hashTrimmed = await computeSha256Hex(rawVal.trim());
+
+      if (hashExact === TEACHER_PWD_HASH || hashTrimmed === TEACHER_PWD_HASH) {
+        sessionStorage.setItem(TEACHER_SESSION_KEY, 'true');
+        updateTeacherTopbarBadge();
+        closeTeacherAuthModal();
+        showTeacherDashboard();
+      } else {
+        if (errEl) errEl.textContent = '❌ รหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง';
+        if (cardEl) {
+          cardEl.classList.remove('auth-shake');
+          void cardEl.offsetWidth;
+          cardEl.classList.add('auth-shake');
+        }
+        if (pwdInp) {
+          pwdInp.value = '';
+          pwdInp.focus();
+        }
+      }
+    }
+
+    function lockTeacherMode() {
+      sessionStorage.removeItem(TEACHER_SESSION_KEY);
+      updateTeacherTopbarBadge();
+      closeTeacherModal();
+    }
+
+    function showTeacherDashboard() {
+      const modal = document.getElementById('teacher-modal');
+      if (modal) modal.classList.add('show');
+
+      const gasInput = document.getElementById('gas-url-input');
+      if (gasInput) gasInput.value = localStorage.getItem('khong_gas_url') || '';
+
+      populateEditorStageDropdown();
+      loadStageIntoEditor(editingStageIndex, editingPartIndex);
+      renderStudentEditor();
+      renderLogTable();
+    }
+
+    function closeTeacherModal() {
+      const modal = document.getElementById('teacher-modal');
+      if (modal) modal.classList.remove('show');
+    }
+
+    function switchTeacherTab(tabKey) {
+      ['ex', 'stu', 'log'].forEach(k => {
+        document.getElementById('teacher-tab-' + k).classList.toggle('hidden', k !== tabKey);
+        document.getElementById('tab-btn-' + k).classList.toggle('active', k === tabKey);
+      });
+    }
+
+    function populateEditorStageDropdown() {
+      const sel = document.getElementById('editor-stage-select');
+      if (!sel) return;
+      sel.innerHTML = exercisesList.map((ex, idx) => `<option value="${idx}">${ex.title}</option>`).join('');
+      sel.value = editingStageIndex;
+    }
+
+    function loadStageIntoEditor(stageIdx, partIdx = 0) {
+      editingStageIndex = parseInt(stageIdx, 10) || 0;
+      const ex = exercisesList[editingStageIndex];
+      editingPartIndex = Math.min(parseInt(partIdx, 10) || 0, ex.parts.length - 1);
+
+      const partSel = document.getElementById('editor-part-select');
+      if (partSel) {
+        if (ex.parts.length > 1) {
+          partSel.classList.remove('hidden');
+          partSel.innerHTML = ex.parts.map((p, idx) => `<option value="${idx}">${p.name}</option>`).join('');
+          partSel.value = editingPartIndex;
+        } else {
+          partSel.classList.add('hidden');
+        }
+      }
+
+      const titleInp = document.getElementById('editor-stage-title');
+      if (titleInp) titleInp.value = ex.title;
+      editingStepsTemp = JSON.parse(JSON.stringify(ex.parts[editingPartIndex].steps));
+      renderEditorStepsList();
+    }
+
+    function getGongOptionsHTML(selectedVal) {
+      let html = `<option value="-1" ${selectedVal === -1 ? 'selected' : ''}>- (ไม่ตี)</option>`;
+      GONG_NOTES.forEach(g => {
+        html += `<option value="${g.id}" ${selectedVal === g.id ? 'selected' : ''}>ลูก ${g.label}</option>`;
+      });
+      return html;
+    }
+
+    function renderEditorStepsList() {
+      const box = document.getElementById('editor-steps-container');
+      if (!box) return;
+
+      box.innerHTML = editingStepsTemp.map((st, sIdx) => `
+        <div style="display:flex; align-items:center; gap:5px; padding:6px; border-bottom:1px solid #F3E5AB; flex-wrap:wrap;">
+          <span style="font-weight:700; font-size:0.76rem; width:46px;">#${sIdx + 1}</span>
+          <label style="font-size:0.76rem;">ห้อง:
+            <input type="number" min="1" max="99" value="${st.bar || 1}" onchange="updateTempStep(${sIdx}, 'bar', this.value)"
+                   style="width:48px; padding:3px 5px; border-radius:6px; border:1px solid #D9A76A;" />
+          </label>
+          <label style="font-size:0.76rem;">ตัวที่:
+            <select onchange="updateTempStep(${sIdx}, 'beat', this.value)" style="padding:3px; border-radius:6px; border:1px solid #D97706;">
+              <option value="1" ${(st.beat || 1) === 1 ? 'selected' : ''}>1</option>
+              <option value="2" ${(st.beat || 1) === 2 ? 'selected' : ''}>2 (ยก)</option>
+              <option value="3" ${(st.beat || 1) === 3 ? 'selected' : ''}>3</option>
+              <option value="4" ${(st.beat || 1) === 4 ? 'selected' : ''}>4 (ตก)</option>
+            </select>
+          </label>
+          <label style="font-size:0.76rem;">ซ้าย:
+            <select onchange="updateTempStep(${sIdx}, 'left', this.value)" style="padding:3px; border-radius:6px; border:1px solid #3B82F6;">
+              ${getGongOptionsHTML(st.left)}
+            </select>
+          </label>
+          <label style="font-size:0.76rem;">ขวา:
+            <select onchange="updateTempStep(${sIdx}, 'right', this.value)" style="padding:3px; border-radius:6px; border:1px solid #EA580C;">
+              ${getGongOptionsHTML(st.right)}
+            </select>
+          </label>
+          <button type="button" class="mini-btn" style="padding:3px 8px; color:#DC2626;" onclick="removeEditorStep(${sIdx})">ลบ</button>
+        </div>
+      `).join('');
+    }
+
+    function updateTempStep(sIdx, field, val) {
+      if (!editingStepsTemp[sIdx]) return;
+      const num = parseInt(val, 10);
+      if (field === 'bar') {
+        editingStepsTemp[sIdx].bar = Math.max(1, num || 1);
+      } else if (field === 'beat') {
+        editingStepsTemp[sIdx].beat = Math.min(4, Math.max(1, num || 1));
+      } else {
+        editingStepsTemp[sIdx][field] = num;
+      }
+      const b = editingStepsTemp[sIdx].bar || 1;
+      const bt = editingStepsTemp[sIdx].beat || 1;
+      editingStepsTemp[sIdx].slot = (b - 1) * 4 + (bt - 1);
+      editingStepsTemp[sIdx].ching = formatBeatLabel(b, bt);
+    }
+
+    function addEditorStep() {
+      const last = editingStepsTemp[editingStepsTemp.length - 1];
+      let nextBar = last ? (last.bar || 1) : 1;
+      let nextBeat = last ? (last.beat || 1) + 1 : 1;
+      if (nextBeat > 4) {
+        nextBar++;
+        nextBeat = 1;
+      }
+      editingStepsTemp.push({
+        bar: nextBar,
+        beat: nextBeat,
+        slot: (nextBar - 1) * 4 + (nextBeat - 1),
+        left: 0,
+        right: 7,
+        ching: formatBeatLabel(nextBar, nextBeat)
+      });
+      renderEditorStepsList();
+    }
+
+    function removeEditorStep(sIdx) {
+      if (editingStepsTemp.length <= 1) {
+        alert('ในแต่ละด่านต้องมีอย่างน้อย 1 จังหวะโน้ตครับ');
+        return;
+      }
+      editingStepsTemp.splice(sIdx, 1);
+      renderEditorStepsList();
+    }
+
+    function saveEditedExercise() {
+      const titleInp = document.getElementById('editor-stage-title');
+      if (titleInp && titleInp.value.trim()) {
+        exercisesList[editingStageIndex].title = titleInp.value.trim();
+      }
+      // คำนวณ slot และจัดเรียงตามลำดับห้อง/จังหวะให้ถูกต้อง
+      const normalized = editingStepsTemp.map(st => {
+        const bar = Math.max(1, parseInt(st.bar, 10) || 1);
+        const beat = Math.min(4, Math.max(1, parseInt(st.beat, 10) || 1));
+        return {
+          bar,
+          beat,
+          slot: (bar - 1) * 4 + (beat - 1),
+          left: st.left,
+          right: st.right,
+          ching: formatBeatLabel(bar, beat)
+        };
+      }).sort((a, b) => a.slot - b.slot);
+
+      const maxBar = normalized.reduce((m, s) => Math.max(m, s.bar), 1);
+      exercisesList[editingStageIndex].parts[editingPartIndex].steps = normalized;
+      exercisesList[editingStageIndex].parts[editingPartIndex].totalBars = maxBar;
+
+      localStorage.setItem('khong_exercises_v7', JSON.stringify(exercisesList));
+      populateEditorStageDropdown();
+      if (!document.getElementById('screen-stages').classList.contains('hidden')) {
+        showStagesScreen();
+      }
+      if (!document.getElementById('screen-practice').classList.contains('hidden')) {
+        const titleEl = document.getElementById('practice-stage-title');
+        if (titleEl) titleEl.textContent = exercisesList[currentExerciseIndex].title;
+        resetCurrentExercise();
+      }
+      alert('บันทึกข้อมูลแบบฝึกหัดเรียบร้อยแล้วครับ!');
+    }
+
+    function resetDefaultExercises() {
+      if (!confirm('ต้องการคืนค่าแบบฝึกหัดทั้ง 10 ด่านกลับเป็นต้นฉบับจากไฟล์ Word ใช่หรือไม่?')) return;
+      exercisesList = JSON.parse(JSON.stringify(DEFAULT_EXERCISES));
+      localStorage.removeItem('khong_exercises_v7');
+      loadStageIntoEditor(editingStageIndex, 0);
+      alert('คืนค่าแบบฝึกหัดต้นฉบับเรียบร้อยแล้วครับ');
+    }
+
+    function renderStudentEditor() {
+      const box = document.getElementById('student-editor-list');
+      if (!box) return;
+      box.innerHTML = studentsList.map((s, idx) => `
+        <div style="display:flex; gap:6px; align-items:center;">
+          <span style="font-weight:700; font-size:0.82rem; width:55px;">คนที่ ${idx + 1}:</span>
+          <input type="text" id="edit-stu-code-${idx}" value="${s.code}" placeholder="รหัสนักศึกษา"
+                 style="width:120px; padding:6px 8px; border-radius:8px; border:1px solid #D9A76A; font-family:'Kanit',sans-serif;" />
+          <input type="text" id="edit-stu-name-${idx}" value="${s.name}" placeholder="ชื่อ-นามสกุลจริง"
+                 style="flex:1; padding:6px 8px; border-radius:8px; border:1px solid #D9A76A; font-family:'Kanit',sans-serif;" />
+        </div>
+      `).join('');
+    }
+
+    function saveStudentDirectory() {
+      studentsList.forEach((s, idx) => {
+        const cInp = document.getElementById('edit-stu-code-' + idx);
+        const nInp = document.getElementById('edit-stu-name-' + idx);
+        if (cInp && cInp.value.trim()) s.code = cInp.value.trim();
+        if (nInp && nInp.value.trim()) s.name = nInp.value.trim();
+      });
+      localStorage.setItem('khong_students_v4', JSON.stringify(studentsList));
+      alert('บันทึกรหัสนักศึกษาและรายชื่อทั้ง 7 คนเรียบร้อยแล้วครับ!');
+    }
+
+    function recordPracticeLog(stageIdx, partIdx, exerciseTitle, accuracyNum) {
+      const logItem = {
+        timestamp: new Date().toLocaleString('th-TH'),
+        studentCode: currentStudent ? currentStudent.code : '6901',
+        studentName: currentStudent ? currentStudent.name : 'นักศึกษา',
+        stageIndex: stageIdx,
+        partIndex: partIdx,
+        exercise: exerciseTitle,
+        accuracyNum: accuracyNum,
+        accuracy: accuracyNum + '%',
+        mascot: MASCOT_DATA[currentMascot].name,
+        status: accuracyNum >= 80 ? 'ผ่านเกณฑ์ - คะแนนทะลุเป้าแน่ๆ!' : 'กำลังฝึกซ้อม'
+      };
+
+      try {
+        const existing = JSON.parse(localStorage.getItem('khong_srl_logs_v4') || '[]');
+        existing.unshift(logItem);
+        localStorage.setItem('khong_srl_logs_v4', JSON.stringify(existing));
+      } catch (e) {}
+
+      const gasUrl = localStorage.getItem('khong_gas_url');
+      if (gasUrl && gasUrl.startsWith('http')) {
+        fetch(gasUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(logItem)
+        }).catch(() => {});
+      }
+    }
+
+    function saveGasUrl() {
+      const gasInput = document.getElementById('gas-url-input');
+      if (gasInput) {
+        localStorage.setItem('khong_gas_url', gasInput.value.trim());
+        alert('บันทึกลิงก์เชื่อมต่อ Google Sheets เรียบร้อยแล้วครับ!');
+      }
+    }
+
+    function renderLogTable() {
+      const tbody = document.getElementById('log-table-body');
+      if (!tbody) return;
+      const logs = JSON.parse(localStorage.getItem('khong_srl_logs_v4') || '[]');
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">ยังไม่มีประวัติการซ้อมในเครื่องนี้</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td>${l.timestamp}</td>
+          <td>${l.studentCode}</td>
+          <td>${l.studentName}</td>
+          <td>${l.exercise}</td>
+          <td><strong>${l.accuracy}</strong></td>
+          <td>${l.status}</td>
+        </tr>
+      `).join('');
+    }
+
+    function exportLogsCSV() {
+      const logs = JSON.parse(localStorage.getItem('khong_srl_logs_v4') || '[]');
+      if (logs.length === 0) {
+        alert('ยังไม่มีข้อมูลสถิติให้ดาวน์โหลดครับ');
+        return;
+      }
+      let csv = '\uFEFFTimestamp,Student_ID,Student_Name,Exercise,Accuracy,Mascot,Status\n';
+      logs.forEach(l => {
+        csv += `"${l.timestamp}","${l.studentCode}","${l.studentName}","${l.exercise}","${l.accuracy}","${l.mascot}","${l.status}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'KhongMaster_SRL_Logs.csv';
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedData();
+      updateTeacherTopbarBadge();
+      renderMascotPreviews();
+      preloadCustomSoundsSilently();
+    });
+  </script>
+</body>
+</html>
